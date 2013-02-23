@@ -3,6 +3,10 @@
   <persistence-unit name="SmartGymPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>smartgym.models.entities.Manager</class>
+    <class>smartgym.models.entities.Address</class>
+    <class>smartgym.models.entities.Client</class>
+    <class>smartgym.models.entities.Contact</class>
+    <class>smartgym.models.entities.Employee</class>
     <properties>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>

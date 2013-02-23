@@ -17,7 +17,7 @@ public abstract class HibernateConfig {
 
         try {
             AnnotationConfiguration config = new AnnotationConfiguration();
-            config.configure("hibernate.cfg.xml");
+            config.configure("./META-INF/hibernate.cfg.xml");
             new SchemaExport(config).create(true, true);          
 
         } catch(Exception e)  {
