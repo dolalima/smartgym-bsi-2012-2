@@ -11,15 +11,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import smartgym.controllers.exceptions.NonexistentEntityException;
-import smartgym.models.entities.Address;
+import smartgym.models.entities.Person;
 
 /**
  *
  * @author Carlos
  */
-public class AddressJpaController implements Serializable {
+public class PersonJpaController implements Serializable {
 
-    public AddressJpaController(EntityManagerFactory emf) {
+    public PersonJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -28,12 +28,12 @@ public class AddressJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Address address) {
+    public void create(Person person) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(address);
+            em.persist(person);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -42,19 +42,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public void edit(Address address) throws NonexistentEntityException, Exception {
+    public void edit(Person person) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            address = em.merge(address);
+            person = em.merge(person);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = address.getId();
-                if (findAddress(id) == null) {
-                    throw new NonexistentEntityException("The address with id " + id + " no longer exists.");
+                Long id = person.getId();
+                if (findPerson(id) == null) {
+                    throw new NonexistentEntityException("The person with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -70,14 +70,14 @@ public class AddressJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Address address;
+            Person person;
             try {
-                address = em.getReference(Address.class, id);
-                address.getId();
+                person = em.getReference(Person.class, id);
+                person.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The person with id " + id + " no longer exists.", enfe);
             }
-            em.remove(address);
+            em.remove(person);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -86,18 +86,18 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public List<Address> findAddressEntities() {
-        return findAddressEntities(true, -1, -1);
+    public List<Person> findPersonEntities() {
+        return findPersonEntities(true, -1, -1);
     }
 
-    public List<Address> findAddressEntities(int maxResults, int firstResult) {
-        return findAddressEntities(false, maxResults, firstResult);
+    public List<Person> findPersonEntities(int maxResults, int firstResult) {
+        return findPersonEntities(false, maxResults, firstResult);
     }
 
-    private List<Address> findAddressEntities(boolean all, int maxResults, int firstResult) {
+    private List<Person> findPersonEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from Address as o");
+            Query q = em.createQuery("select object(o) from Person as o");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
@@ -108,19 +108,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public Address findAddress(Long id) {
+    public Person findPerson(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Address.class, id);
+            return em.find(Person.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getAddressCount() {
+    public int getPersonCount() {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select count(o) from Address as o");
+            Query q = em.createQuery("select count(o) from Person as o");
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();

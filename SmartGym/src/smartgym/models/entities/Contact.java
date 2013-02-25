@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -16,6 +17,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Contact implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +25,6 @@ public class Contact implements Serializable {
     private String residencialPhone;
     private String cellPhone;
     private String email;
-    private String website;
 
     public Long getId() {
         return id;
@@ -55,17 +56,7 @@ public class Contact implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-    
-    
+    }   
 
     @Override
     public int hashCode() {

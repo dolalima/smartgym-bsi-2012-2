@@ -2,18 +2,20 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="SmartGymPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>smartgym.models.entities.Manager</class>
     <class>smartgym.models.entities.Address</class>
     <class>smartgym.models.entities.Client</class>
     <class>smartgym.models.entities.Contact</class>
-    <class>smartgym.models.entities.Employee</class>
+    <class>smartgym.models.entities.Employee</class>    
+    <class>smartgym.models.entities.Person</class>
+    <class>smartgym.models.entities.Payment</class>
+    <class>smartgym.models.entities.Manager</class>
     <properties>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.connection.password" value=""/>
       <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/smartgym?zeroDateTimeBehavior=convertToNull"/>
-      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
-      <property name="hibernate.hbm2ddl.auto" value="true"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
   </persistence-unit>
 </persistence>

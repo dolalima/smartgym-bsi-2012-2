@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.UserTransaction;
 import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.models.entities.Employee;
 
@@ -20,11 +19,9 @@ import smartgym.models.entities.Employee;
  */
 public class EmployeeJpaController implements Serializable {
 
-    public EmployeeJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public EmployeeJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

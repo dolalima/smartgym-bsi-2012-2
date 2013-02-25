@@ -45,7 +45,9 @@ public class Manager implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }   
+    }
+    
+    
 
     @Override
     public int hashCode() {
@@ -69,7 +71,7 @@ public class Manager implements Serializable {
 
     @Override
     public String toString() {
-        return "smartgym.models.entities.Admin[ id=" + id + " ]";
+        return "smartgym.models.entities.Manager[ id=" + id + " ]";
     }
     
 }

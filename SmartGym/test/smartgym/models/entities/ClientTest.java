@@ -37,28 +37,28 @@ public class ClientTest {
     }
 
     /**
-     * Test of getId method, of class Client.
+     * Test of getPaymentDay method, of class Client.
      */
     @Test
-    public void testGetId() {
-        System.out.println("getId");
+    public void testGetPaymentDay() {
+        System.out.println("getPaymentDay");
         Client instance = new Client();
-        Long expResult = null;
-        Long result = instance.getId();
+        int expResult = 0;
+        int result = instance.getPaymentDay();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setId method, of class Client.
+     * Test of setPaymentDay method, of class Client.
      */
     @Test
-    public void testSetId() {
-        System.out.println("setId");
-        Long id = null;
+    public void testSetPaymentDay() {
+        System.out.println("setPaymentDay");
+        int paymentDay = 0;
         Client instance = new Client();
-        instance.setId(id);
+        instance.setPaymentDay(paymentDay);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

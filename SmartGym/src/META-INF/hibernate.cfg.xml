@@ -9,8 +9,9 @@
     <mapping class="smartgym.models.entities.Address"/>
     <mapping class="smartgym.models.entities.Contact"/>
     <mapping class="smartgym.models.entities.Person"/>
-    <mapping class="smartgym.models.entities.Employee"/>
     <mapping class="smartgym.models.entities.Client"/>
+    <mapping class="smartgym.models.entities.Employee"/>
+    <mapping class="smartgym.models.entities.Payment"/>
     <mapping class="smartgym.models.entities.Manager"/>
   </session-factory>
 </hibernate-configuration>

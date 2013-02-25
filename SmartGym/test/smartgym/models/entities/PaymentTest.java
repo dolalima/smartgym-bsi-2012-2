@@ -4,6 +4,7 @@
  */
 package smartgym.models.entities;
 
+import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Carlos
  */
-public class AddressTest {
+public class PaymentTest {
     
-    public AddressTest() {
+    public PaymentTest() {
     }
     
     @BeforeClass
@@ -37,12 +38,12 @@ public class AddressTest {
     }
 
     /**
-     * Test of getId method, of class Address.
+     * Test of getId method, of class Payment.
      */
     @Test
     public void testGetId() {
         System.out.println("getId");
-        Address instance = new Address();
+        Payment instance = new Payment();
         Long expResult = null;
         Long result = instance.getId();
         assertEquals(expResult, result);
@@ -51,160 +52,133 @@ public class AddressTest {
     }
 
     /**
-     * Test of setId method, of class Address.
+     * Test of setId method, of class Payment.
      */
     @Test
     public void testSetId() {
         System.out.println("setId");
         Long id = null;
-        Address instance = new Address();
+        Payment instance = new Payment();
         instance.setId(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getStreet method, of class Address.
+     * Test of getPaymentedDay method, of class Payment.
      */
     @Test
-    public void testGetStreet() {
-        System.out.println("getStreet");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.getStreet();
+    public void testGetPaymentedDay() {
+        System.out.println("getPaymentedDay");
+        Payment instance = new Payment();
+        Date expResult = null;
+        Date result = instance.getPaymentedDay();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setStreet method, of class Address.
+     * Test of setPaymentedDay method, of class Payment.
      */
     @Test
-    public void testSetStreet() {
-        System.out.println("setStreet");
-        String street = "";
-        Address instance = new Address();
-        instance.setStreet(street);
+    public void testSetPaymentedDay() {
+        System.out.println("setPaymentedDay");
+        Date paymentedDay = null;
+        Payment instance = new Payment();
+        instance.setPaymentedDay(paymentedDay);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getNeighborhood method, of class Address.
+     * Test of getPaymentValue method, of class Payment.
      */
     @Test
-    public void testGetNeighborhood() {
-        System.out.println("getNeighborhood");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.getNeighborhood();
+    public void testGetPaymentValue() {
+        System.out.println("getPaymentValue");
+        Payment instance = new Payment();
+        double expResult = 0.0;
+        double result = instance.getPaymentValue();
+        assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setPaymentValue method, of class Payment.
+     */
+    @Test
+    public void testSetPaymentValue() {
+        System.out.println("setPaymentValue");
+        double paymentValue = 0.0;
+        Payment instance = new Payment();
+        instance.setPaymentValue(paymentValue);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getClient method, of class Payment.
+     */
+    @Test
+    public void testGetClient() {
+        System.out.println("getClient");
+        Payment instance = new Payment();
+        Client expResult = null;
+        Client result = instance.getClient();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setNeighborhood method, of class Address.
+     * Test of setClient method, of class Payment.
      */
     @Test
-    public void testSetNeighborhood() {
-        System.out.println("setNeighborhood");
-        String neighborhood = "";
-        Address instance = new Address();
-        instance.setNeighborhood(neighborhood);
+    public void testSetClient() {
+        System.out.println("setClient");
+        Client client = null;
+        Payment instance = new Payment();
+        instance.setClient(client);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getComplement method, of class Address.
+     * Test of getEmployee method, of class Payment.
      */
     @Test
-    public void testGetComplement() {
-        System.out.println("getComplement");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.getComplement();
+    public void testGetEmployee() {
+        System.out.println("getEmployee");
+        Payment instance = new Payment();
+        Employee expResult = null;
+        Employee result = instance.getEmployee();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setComplement method, of class Address.
+     * Test of setEmployee method, of class Payment.
      */
     @Test
-    public void testSetComplement() {
-        System.out.println("setComplement");
-        String complement = "";
-        Address instance = new Address();
-        instance.setComplement(complement);
+    public void testSetEmployee() {
+        System.out.println("setEmployee");
+        Employee employee = null;
+        Payment instance = new Payment();
+        instance.setEmployee(employee);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getCity method, of class Address.
-     */
-    @Test
-    public void testGetCity() {
-        System.out.println("getCity");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.getCity();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setCity method, of class Address.
-     */
-    @Test
-    public void testSetCity() {
-        System.out.println("setCity");
-        String city = "";
-        Address instance = new Address();
-        instance.setCity(city);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getZipcode method, of class Address.
-     */
-    @Test
-    public void testGetZipcode() {
-        System.out.println("getZipcode");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.getZipcode();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setZipcode method, of class Address.
-     */
-    @Test
-    public void testSetZipcode() {
-        System.out.println("setZipcode");
-        String zipcode = "";
-        Address instance = new Address();
-        instance.setZipcode(zipcode);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of hashCode method, of class Address.
+     * Test of hashCode method, of class Payment.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        Address instance = new Address();
+        Payment instance = new Payment();
         int expResult = 0;
         int result = instance.hashCode();
         assertEquals(expResult, result);
@@ -213,13 +187,13 @@ public class AddressTest {
     }
 
     /**
-     * Test of equals method, of class Address.
+     * Test of equals method, of class Payment.
      */
     @Test
     public void testEquals() {
         System.out.println("equals");
         Object object = null;
-        Address instance = new Address();
+        Payment instance = new Payment();
         boolean expResult = false;
         boolean result = instance.equals(object);
         assertEquals(expResult, result);
@@ -228,12 +202,12 @@ public class AddressTest {
     }
 
     /**
-     * Test of toString method, of class Address.
+     * Test of toString method, of class Payment.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        Address instance = new Address();
+        Payment instance = new Payment();
         String expResult = "";
         String result = instance.toString();
         assertEquals(expResult, result);

@@ -37,33 +37,6 @@ public class EmployeeTest {
     }
 
     /**
-     * Test of getId method, of class Employee.
-     */
-    @Test
-    public void testGetId() {
-        System.out.println("getId");
-        Employee instance = new Employee();
-        Long expResult = null;
-        Long result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setId method, of class Employee.
-     */
-    @Test
-    public void testSetId() {
-        System.out.println("setId");
-        Long id = null;
-        Employee instance = new Employee();
-        instance.setId(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getPassword method, of class Employee.
      */
     @Test

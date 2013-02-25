@@ -5,11 +5,11 @@
 package smartgym.models.entities;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -17,15 +17,16 @@ import javax.persistence.Id;
  */
 @Entity
 public class Address implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;    
-    private String street;    
+    private Long id;
+    private String street;
     private String neighborhood;
-    private String zipcode;
+    private String complement;
     private String city;
-    
+    private String zipcode;   
 
     public Long getId() {
         return id;
@@ -51,12 +52,12 @@ public class Address implements Serializable {
         this.neighborhood = neighborhood;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getComplement() {
+        return complement;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setComplement(String complement) {
+        this.complement = complement;
     }
 
     public String getCity() {
@@ -66,7 +67,14 @@ public class Address implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
-    
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }   
     
 
     @Override

@@ -145,33 +145,6 @@ public class ContactTest {
     }
 
     /**
-     * Test of getWebsite method, of class Contact.
-     */
-    @Test
-    public void testGetWebsite() {
-        System.out.println("getWebsite");
-        Contact instance = new Contact();
-        String expResult = "";
-        String result = instance.getWebsite();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setWebsite method, of class Contact.
-     */
-    @Test
-    public void testSetWebsite() {
-        System.out.println("setWebsite");
-        String website = "";
-        Contact instance = new Contact();
-        instance.setWebsite(website);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of hashCode method, of class Contact.
      */
     @Test

@@ -5,31 +5,32 @@
 package smartgym.models.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Carlos
  */
 @Entity
-public class Client extends Person implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private boolean regular;
-
+public class Client extends Person {
     
-    public Long getId() {
-        return id;
+        
+    private int paymentDay;
+    private boolean regular;
+    
+
+    public int getPaymentDay() {
+        return paymentDay;
     }
 
-    
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaymentDay(int paymentDay) {
+        this.paymentDay = paymentDay;
     }
 
     public boolean isRegular() {
@@ -39,13 +40,15 @@ public class Client extends Person implements Serializable {
     public void setRegular(boolean regular) {
         this.regular = regular;
     }
+
+    
     
     
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
     }
 
@@ -56,7 +59,7 @@ public class Client extends Person implements Serializable {
             return false;
         }
         Client other = (Client) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;
@@ -64,7 +67,7 @@ public class Client extends Person implements Serializable {
 
     @Override
     public String toString() {
-        return "smartgym.models.entities.Cliente[ id=" + id + " ]";
+        return "smartgym.models.entities.Client[ id=" + this.getId() + " ]";
     }
     
 }

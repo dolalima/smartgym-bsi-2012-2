@@ -6,81 +6,48 @@ package smartgym.models.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Carlos
  */
 @Entity
-@Table(name = "payment")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
-    @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id"),
-    @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
-    @NamedQuery(name = "Payment.findByPaymentValue", query = "SELECT p FROM Payment p WHERE p.paymentValue = :paymentValue")})
 public class Payment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @Column(name = "paymentDate")
-    @Temporal(TemporalType.DATE)
-    private Date paymentDate;
-    @Basic(optional = false)
-    @Column(name = "paymentValue")
-    private double paymentValue;
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Employee employeeId;
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Client clientId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date paymentedDay;
+    private double paymentValue;    
+    @ManyToOne
+    @JoinColumn(name="client")
+    private Client client;    
+    @ManyToOne
+    @JoinColumn(name="employee")    
+    private Employee employee;
 
-    public Payment() {
-    }
-
-    public Payment(Integer id) {
-        this.id = id;
-    }
-
-    public Payment(Integer id, Date paymentDate, int paymentValue) {
-        this.id = id;
-        this.paymentDate = paymentDate;
-        this.paymentValue = paymentValue;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getPaymentedDay() {
+        return paymentedDay;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPaymentedDay(Date paymentedDay) {
+        this.paymentedDay = paymentedDay;
     }
 
     public double getPaymentValue() {
@@ -91,21 +58,25 @@ public class Payment implements Serializable {
         this.paymentValue = paymentValue;
     }
 
-    public Employee getEmployeeId() {
-        return employeeId;
+    public Client getClient() {
+        return client;
     }
 
-    public void setEmployeeId(Employee employeeId) {
-        this.employeeId = employeeId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public Client getClientId() {
-        return clientId;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setClientId(Client clientId) {
-        this.clientId = clientId;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
+    
+    
+    
+    
 
     @Override
     public int hashCode() {
