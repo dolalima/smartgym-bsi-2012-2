@@ -4,6 +4,8 @@
  */
 package smartgym.gui.tables;
 
+import java.util.List;
+
 /**
  *
  * @author Carlos
@@ -52,6 +54,11 @@ public class PaymentTableFrame extends TableFrameBase {
 
     @Override
     protected void updateTable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void fillTable(List objectList) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
