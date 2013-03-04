@@ -4,6 +4,7 @@
  */
 package smartgym.models.entities;
 
+import smartgym.models.entities.exceptions.CpfInvalidLengthException;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -14,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
+import javax.persistence.Temporal;;
 
 /**
  *
@@ -31,9 +32,9 @@ public class Person implements Serializable {
     private String cpf;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthday;    
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Contact contact;    
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     private boolean active;
 
@@ -57,7 +58,7 @@ public class Person implements Serializable {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
+    public void setCpf(String cpf) {        
         this.cpf = cpf;
     }
 
