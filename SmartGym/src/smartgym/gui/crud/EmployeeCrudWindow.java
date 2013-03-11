@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JDialog;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.models.entities.Address;
@@ -485,36 +486,69 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
     @Override
     protected void fillTextfields() {
-        if(employee != null){
-            
+        if (employee != null) {
+
             personNameTextField.setText(employee.getName());
-            personCpfTextField.setText(employee.getCpf());            
+            personCpfTextField.setText(employee.getCpf());
             personBirthdayTextField.setText(
                     new SimpleDateFormat("dd/MM/yyy").format(employee.getBirthday()));
-            
+
             addressStreetTextField.setText(employee.getAddress().getStreet());
             addressNeiborhoodTextField.setText(employee.getAddress().getNeighborhood());
             addressComplementTextField.setText(employee.getAddress().getComplement());
             addressZipcodeTextField.setText(employee.getAddress().getZipcode());
             addressCityTextField.setText(employee.getAddress().getCity());
-            
+
             contactResitencialPhoneTextField.setText(employee.getContact().getResidencialPhone());
             contactCellPhoneTextField.setText(employee.getContact().getCellPhone());
             contactEmailTextField.setText(employee.getContact().getEmail());
-            
-            if(employee.isActive()){
+
+            if (employee.isActive()) {
                 employeeActiveComboBox.setSelectedIndex(0);
-            }else{
+            } else {
                 employeeActiveComboBox.setSelectedIndex(1);
             }
-            
-            
+
+
         }
     }
 
     @Override
     protected boolean existDependence() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean dependence = false;
+        String dependenceList = "";
+
+        if (this.personNameTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-NOME-\n";
+            dependence = true;
+        }
+
+        if (this.personBirthdayTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-DATA NASCIMENTO-\n";
+            dependence = true;
+        }
+
+        if (this.personCpfTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-CPF-\n";
+            dependence = true;
+        }
+
+        if (this.employeePasswordField.getText().length() > 3) {
+            if (!(this.employeePasswordField.getText().equals(employeePasswordFieldClone.getText()))) {
+                dependenceList = dependenceList + "-SENHAS DIVERGEM-\n";
+                dependence = true;
+            }
+        }else{
+            dependenceList = dependenceList + "-SENHAS MUITO CURTA-\n";
+                dependence = true;
+        }
+
+        if (dependence) {
+            JDialog alert = new JDialog(this, dependenceList, true);
+            alert.setVisible(true);
+        }
+
+        return dependence;
     }
 
     @Override

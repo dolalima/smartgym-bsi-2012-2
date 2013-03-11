@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import smartgym.controllers.ClientJpaController;
 import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.models.entities.Address;
@@ -477,36 +479,60 @@ public class ClientCrudWindow extends CrudWindowBase {
 
     @Override
     protected void fillTextfields() {
-        if(client != null){
-            
+        if (client != null) {
+
             personNameTextField.setText(client.getName());
-            personCpfTextField.setText(client.getCpf());            
+            personCpfTextField.setText(client.getCpf());
             personBirthdayTextField.setText(
                     new SimpleDateFormat("dd/MM/yyy").format(client.getBirthday()));
-            
+
             addressStreetTextField.setText(client.getAddress().getStreet());
             addressNeiborhoodTextField.setText(client.getAddress().getNeighborhood());
             addressComplementTextField.setText(client.getAddress().getComplement());
             addressZipcodeTextField.setText(client.getAddress().getZipcode());
             addressCityTextField.setText(client.getAddress().getCity());
-            
+
             contactResitencialPhoneTextField.setText(client.getContact().getResidencialPhone());
             contactCellPhoneTextField.setText(client.getContact().getCellPhone());
             contactEmailTextField.setText(client.getContact().getEmail());
-            
-            if(client.isActive()){
+
+            if (client.isActive()) {
                 clientActiveComboBox.setSelectedIndex(0);
-            }else{
+            } else {
                 clientActiveComboBox.setSelectedIndex(1);
             }
-            
+
             paydaySpinner.setValue(client.getPaymentDay());
         }
     }
 
     @Override
     protected boolean existDependence() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean dependence = false;
+        String dependenceList = "";
+
+        if (this.personNameTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-NOME-\n";
+            dependence = true;
+        }
+
+        if (this.personBirthdayTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-DATA NASCIMENTO-\n";
+            dependence = true;
+        }
+
+        if (this.personCpfTextField.getText().equals("")) {
+            dependenceList = dependenceList + "-CPF-\n";
+            dependence = true;
+        }
+
+        if (dependence) {
+            JDialog alert = new JDialog(this, dependenceList, true);
+            alert.setVisible(true);
+        }
+
+
+        return dependence;
     }
 
     @Override
@@ -559,7 +585,7 @@ public class ClientCrudWindow extends CrudWindowBase {
 
     @Override
     protected void delete() {
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
         ClientJpaController clienteController = new ClientJpaController(emf);
         try {

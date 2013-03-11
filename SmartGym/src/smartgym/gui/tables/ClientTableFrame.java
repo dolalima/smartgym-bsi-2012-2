@@ -5,6 +5,8 @@
 package smartgym.gui.tables;
 
 import java.util.List;
+import javax.swing.JTable;
+import smartgym.models.entities.Client;
 
 /**
  *
@@ -17,6 +19,7 @@ public class ClientTableFrame extends TableFrameBase {
      */
     public ClientTableFrame() {
         initComponents();
+        this.setTableHeaderl(new String[]{"cpf", "nome", "vencimento", "status"});
     }
 
     /**
@@ -70,6 +73,21 @@ public class ClientTableFrame extends TableFrameBase {
 
     @Override
     protected void fillTable(List objectList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object[][] dados = new Object[objectList.size()][4];
+
+        for (int i = 0; i < objectList.size(); i++) {
+            Client client = (Client) objectList.get(i);
+            dados[i][0] = client.getCpf();
+            dados[i][1] = client.getName();
+            dados[i][2] = client.getPaymentDay();
+            if (client.isRegular()) {
+                dados[i][3] = "sim";
+            } else {
+                dados[i][3] = "não";
+            }
+            
+            this.setTable(new JTable(dados, this.getTableHeaderl()));
+
+        }
     }
 }
