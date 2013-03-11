@@ -13,5 +13,6 @@
     <mapping class="smartgym.models.entities.Employee"/>
     <mapping class="smartgym.models.entities.Payment"/>
     <mapping class="smartgym.models.entities.Manager"/>
+    <mapping class="smartgym.models.entities.Activity"/>
   </session-factory>
 </hibernate-configuration>

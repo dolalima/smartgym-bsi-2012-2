@@ -4,11 +4,25 @@
  */
 package smartgym.gui.crud;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import smartgym.controllers.EmployeeJpaController;
+import smartgym.controllers.exceptions.NonexistentEntityException;
+import smartgym.models.entities.Address;
+import smartgym.models.entities.Contact;
+import smartgym.models.entities.Employee;
+
 /**
  *
  * @author Carlos
  */
 public class EmployeeCrudWindow extends CrudWindowBase {
+
+    private Employee employee;
 
     /**
      * Creates new form EmployeeWindow
@@ -58,12 +72,12 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         cancelButton = new javax.swing.JButton();
         actionButton = new javax.swing.JButton();
         optionCrudPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jLabel2 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        employeePasswordlabel = new javax.swing.JLabel();
+        employeePasswordField = new javax.swing.JPasswordField();
+        employeePasswordLabelClone = new javax.swing.JLabel();
+        employeePasswordFieldClone = new javax.swing.JPasswordField();
+        employeeActiveLabel = new javax.swing.JLabel();
+        employeeActiveComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -305,22 +319,25 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
         optionCrudPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Opções"));
 
-        jLabel1.setText("Senha:");
+        employeePasswordlabel.setText("Senha:");
 
-        jPasswordField1.setText("jPasswordField1");
-
-        jLabel2.setText("Repetir Senha:");
-
-        jPasswordField2.setText("jPasswordField2");
-        jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
+        employeePasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField2ActionPerformed(evt);
+                employeePasswordFieldActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Ativo:");
+        employeePasswordLabelClone.setText("Repetir Senha:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sim", "Não" }));
+        employeePasswordFieldClone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeePasswordFieldCloneActionPerformed(evt);
+            }
+        });
+
+        employeeActiveLabel.setText("Ativo:");
+
+        employeeActiveComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sim", "Não" }));
 
         javax.swing.GroupLayout optionCrudPanelLayout = new javax.swing.GroupLayout(optionCrudPanel);
         optionCrudPanel.setLayout(optionCrudPanelLayout);
@@ -328,34 +345,32 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionCrudPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionCrudPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(optionCrudPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addGroup(optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(employeePasswordLabelClone)
+                    .addComponent(employeePasswordlabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGroup(optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(employeePasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                    .addComponent(employeePasswordFieldClone))
+                .addGap(27, 27, 27)
+                .addComponent(employeeActiveLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(employeeActiveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         optionCrudPanelLayout.setVerticalGroup(
             optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionCrudPanelLayout.createSequentialGroup()
                 .addGroup(optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(employeePasswordlabel)
+                    .addComponent(employeePasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(employeeActiveLabel)
+                    .addComponent(employeeActiveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(employeePasswordLabelClone)
+                    .addComponent(employeePasswordFieldClone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         mainPanel.add(optionCrudPanel, java.awt.BorderLayout.CENTER);
@@ -373,9 +388,13 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         // TODO add your handling code here:
     }//GEN-LAST:event_addressCityTextFieldActionPerformed
 
-    private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
+    private void employeePasswordFieldCloneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeePasswordFieldCloneActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField2ActionPerformed
+    }//GEN-LAST:event_employeePasswordFieldCloneActionPerformed
+
+    private void employeePasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeePasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employeePasswordFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -441,12 +460,12 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     private javax.swing.JTextField contactEmailTextField;
     private javax.swing.JLabel contactResidencialPhoneLabel;
     private javax.swing.JFormattedTextField contactResitencialPhoneTextField;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JComboBox employeeActiveComboBox;
+    private javax.swing.JLabel employeeActiveLabel;
+    private javax.swing.JPasswordField employeePasswordField;
+    private javax.swing.JPasswordField employeePasswordFieldClone;
+    private javax.swing.JLabel employeePasswordLabelClone;
+    private javax.swing.JLabel employeePasswordlabel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionCrudPanel;
     private javax.swing.JLabel personBirthLabel;
@@ -466,7 +485,31 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
     @Override
     protected void fillTextfields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(employee != null){
+            
+            personNameTextField.setText(employee.getName());
+            personCpfTextField.setText(employee.getCpf());            
+            personBirthdayTextField.setText(
+                    new SimpleDateFormat("dd/MM/yyy").format(employee.getBirthday()));
+            
+            addressStreetTextField.setText(employee.getAddress().getStreet());
+            addressNeiborhoodTextField.setText(employee.getAddress().getNeighborhood());
+            addressComplementTextField.setText(employee.getAddress().getComplement());
+            addressZipcodeTextField.setText(employee.getAddress().getZipcode());
+            addressCityTextField.setText(employee.getAddress().getCity());
+            
+            contactResitencialPhoneTextField.setText(employee.getContact().getResidencialPhone());
+            contactCellPhoneTextField.setText(employee.getContact().getCellPhone());
+            contactEmailTextField.setText(employee.getContact().getEmail());
+            
+            if(employee.isActive()){
+                employeeActiveComboBox.setSelectedIndex(0);
+            }else{
+                employeeActiveComboBox.setSelectedIndex(1);
+            }
+            
+            
+        }
     }
 
     @Override
@@ -476,21 +519,114 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
     @Override
     protected void disableTextfields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        personNameTextField.setEnabled(false);
+        personCpfTextField.setEnabled(false);
+        personBirthdayTextField.setEnabled(false);
+        contactResitencialPhoneTextField.setEnabled(false);
+        contactCellPhoneTextField.setEnabled(false);
+        contactResitencialPhoneTextField.setEnabled(false);
+        contactEmailTextField.setEnabled(false);
+        addressStreetTextField.setEnabled(false);
+        addressNeiborhoodTextField.setEnabled(false);
+        addressComplementTextField.setEnabled(false);
+        addressZipcodeTextField.setEnabled(false);
+        addressCityTextField.setEnabled(false);
     }
 
     @Override
     protected void create() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.existDependence()) {
+            fillObject();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+            EmployeeJpaController clienteController = new EmployeeJpaController(emf);
+            clienteController.create(employee);
+            emf.close();
+        } else {
+        }
     }
 
     @Override
     protected void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.existDependence()) {
+            fillObject();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+            EmployeeJpaController clienteController = new EmployeeJpaController(emf);
+            try {
+                clienteController.edit(employee);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            emf.close();
+        } else {
+        }
     }
 
     @Override
     protected void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+        EmployeeJpaController employeeController = new EmployeeJpaController(emf);
+        try {
+            employeeController.destroy(employee.getId());
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        emf.close();
+    }
+
+    @Override
+    protected void fillObject() {
+        if (this.getWindowsType() == CrudWindowType.CREATE) {
+            employee = new Employee();
+            Address address = new Address();
+            Contact contact = new Contact();
+
+            employee.setName(this.personNameTextField.getText());
+            employee.setCpf(this.personCpfTextField.getText());
+            employee.setBirthday(new Date(this.personBirthdayTextField.getText()));
+
+            address.setStreet(this.addressStreetTextField.getText());
+            address.setNeighborhood(this.addressNeiborhoodTextField.getText());
+            address.setComplement(this.addressComplementTextField.getText());
+            address.setZipcode(this.addressZipcodeTextField.getText());
+            address.setCity(this.addressCityTextField.getText());
+
+            contact.setResidencialPhone(this.contactResitencialPhoneTextField.getText());
+            contact.setCellPhone(this.contactCellPhoneTextField.getText());
+            contact.setEmail(this.contactEmailTextField.getText());
+
+            if (this.employeeActiveComboBox.getSelectedIndex() == 0) {
+                employee.setActive(true);
+            } else {
+                employee.setActive(false);
+            }
+
+            employee.setAddress(address);
+            employee.setContact(contact);
+        } else {
+            employee.setName(this.personNameTextField.getText());
+            employee.setCpf(this.personCpfTextField.getText());
+            employee.setBirthday(new Date(this.personBirthdayTextField.getText()));
+
+            if (this.employeeActiveComboBox.getSelectedIndex() == 0) {
+                employee.setActive(true);
+            } else {
+                employee.setActive(false);
+            }
+
+            employee.getAddress().setStreet(this.addressStreetTextField.getText());
+            employee.getAddress().setNeighborhood(this.addressNeiborhoodTextField.getText());
+            employee.getAddress().setComplement(this.addressComplementTextField.getText());
+            employee.getAddress().setZipcode(this.addressZipcodeTextField.getText());
+            employee.getAddress().setCity(this.addressCityTextField.getText());
+
+            employee.getContact().setResidencialPhone(this.contactResitencialPhoneTextField.getText());
+            employee.getContact().setCellPhone(this.contactCellPhoneTextField.getText());
+            employee.getContact().setEmail(this.contactEmailTextField.getText());
+
+        }
     }
 }

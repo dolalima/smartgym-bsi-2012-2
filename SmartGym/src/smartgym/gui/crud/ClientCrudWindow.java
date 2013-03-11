@@ -4,17 +4,31 @@
  */
 package smartgym.gui.crud;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import smartgym.controllers.ClientJpaController;
+import smartgym.controllers.exceptions.NonexistentEntityException;
+import smartgym.models.entities.Address;
+import smartgym.models.entities.Client;
+import smartgym.models.entities.Contact;
+
 /**
  *
  * @author Carlos
  */
 public class ClientCrudWindow extends CrudWindowBase {
 
+    private Client client;
+
     /**
      * Creates new form ClientWindowDialog
      */
-    public ClientCrudWindow(java.awt.Frame parent, boolean modal,CrudWindowType type) {
-        super(parent, modal,type);
+    public ClientCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type) {
+        super(parent, modal, type);
         initComponents();
     }
 
@@ -62,7 +76,7 @@ public class ClientCrudWindow extends CrudWindowBase {
         clientActiveLabel = new javax.swing.JLabel();
         clientActiveComboBox = new javax.swing.JComboBox();
         paydayLabel = new javax.swing.JLabel();
-        paydayComboBox = new javax.swing.JComboBox();
+        paydaySpinner = new javax.swing.JSpinner();
 
         jTextField1.setText("jTextField1");
 
@@ -281,6 +295,11 @@ public class ClientCrudWindow extends CrudWindowBase {
         cancelButton.setText("Cancelar");
 
         actionButton.setText("Ação");
+        actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout actionCrudPanelLayout = new javax.swing.GroupLayout(actionCrudPanel);
         actionCrudPanel.setLayout(actionCrudPanelLayout);
@@ -313,7 +332,7 @@ public class ClientCrudWindow extends CrudWindowBase {
 
         paydayLabel.setText("Vencimento:");
 
-        paydayComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        paydaySpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
 
         javax.swing.GroupLayout optionCrudPanelLayout = new javax.swing.GroupLayout(optionCrudPanel);
         optionCrudPanel.setLayout(optionCrudPanelLayout);
@@ -327,8 +346,8 @@ public class ClientCrudWindow extends CrudWindowBase {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paydayLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paydayComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addComponent(paydaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(199, Short.MAX_VALUE))
         );
         optionCrudPanelLayout.setVerticalGroup(
             optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,8 +357,8 @@ public class ClientCrudWindow extends CrudWindowBase {
                     .addComponent(clientActiveLabel)
                     .addComponent(clientActiveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(paydayLabel)
-                    .addComponent(paydayComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(paydaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         mainPanel.add(optionCrudPanel, java.awt.BorderLayout.CENTER);
@@ -356,6 +375,19 @@ public class ClientCrudWindow extends CrudWindowBase {
     private void addressCityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressCityTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_addressCityTextFieldActionPerformed
+
+    private void actionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonActionPerformed
+        // TODO add your handling code here:
+
+        switch (this.getWindowsType()) {
+            case CREATE:
+                this.create();
+            case UPDATE:
+                this.update();
+            case REMOVE:
+                this.delete();
+        }
+    }//GEN-LAST:event_actionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -426,8 +458,8 @@ public class ClientCrudWindow extends CrudWindowBase {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel optionCrudPanel;
-    private javax.swing.JComboBox paydayComboBox;
     private javax.swing.JLabel paydayLabel;
+    private javax.swing.JSpinner paydaySpinner;
     private javax.swing.JLabel personBirthLabel;
     private javax.swing.JFormattedTextField personBirthdayTextField;
     private javax.swing.JLabel personCpfLabel;
@@ -445,7 +477,31 @@ public class ClientCrudWindow extends CrudWindowBase {
 
     @Override
     protected void fillTextfields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(client != null){
+            
+            personNameTextField.setText(client.getName());
+            personCpfTextField.setText(client.getCpf());            
+            personBirthdayTextField.setText(
+                    new SimpleDateFormat("dd/MM/yyy").format(client.getBirthday()));
+            
+            addressStreetTextField.setText(client.getAddress().getStreet());
+            addressNeiborhoodTextField.setText(client.getAddress().getNeighborhood());
+            addressComplementTextField.setText(client.getAddress().getComplement());
+            addressZipcodeTextField.setText(client.getAddress().getZipcode());
+            addressCityTextField.setText(client.getAddress().getCity());
+            
+            contactResitencialPhoneTextField.setText(client.getContact().getResidencialPhone());
+            contactCellPhoneTextField.setText(client.getContact().getCellPhone());
+            contactEmailTextField.setText(client.getContact().getEmail());
+            
+            if(client.isActive()){
+                clientActiveComboBox.setSelectedIndex(0);
+            }else{
+                clientActiveComboBox.setSelectedIndex(1);
+            }
+            
+            paydaySpinner.setValue(client.getPaymentDay());
+        }
     }
 
     @Override
@@ -455,21 +511,116 @@ public class ClientCrudWindow extends CrudWindowBase {
 
     @Override
     protected void disableTextfields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        personNameTextField.setEnabled(false);
+        personCpfTextField.setEnabled(false);
+        personBirthdayTextField.setEnabled(false);
+        contactResitencialPhoneTextField.setEnabled(false);
+        contactCellPhoneTextField.setEnabled(false);
+        contactResitencialPhoneTextField.setEnabled(false);
+        contactEmailTextField.setEnabled(false);
+        addressStreetTextField.setEnabled(false);
+        addressNeiborhoodTextField.setEnabled(false);
+        addressComplementTextField.setEnabled(false);
+        addressZipcodeTextField.setEnabled(false);
+        addressCityTextField.setEnabled(false);
     }
 
     @Override
     protected void create() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.existDependence()) {
+            fillObject();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+            ClientJpaController clienteController = new ClientJpaController(emf);
+            clienteController.create(client);
+            emf.close();
+        } else {
+        }
     }
 
     @Override
     protected void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!this.existDependence()) {
+            fillObject();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+            ClientJpaController clienteController = new ClientJpaController(emf);
+            try {
+                clienteController.edit(client);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            emf.close();
+        } else {
+        }
+
     }
 
     @Override
     protected void delete() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
+        ClientJpaController clienteController = new ClientJpaController(emf);
+        try {
+            clienteController.destroy(client.getId());
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        emf.close();
+    }
+
+    @Override
+    protected void fillObject() {
+        if (this.getWindowsType() == CrudWindowType.CREATE) {
+            client = new Client();
+            Address address = new Address();
+            Contact contact = new Contact();
+
+            client.setName(this.personNameTextField.getText());
+            client.setCpf(this.personCpfTextField.getText());
+            client.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            if (this.clientActiveComboBox.getSelectedIndex() == 0) {
+                client.setActive(true);
+            } else {
+                client.setActive(false);
+            }
+
+            address.setStreet(this.addressStreetTextField.getText());
+            address.setNeighborhood(this.addressNeiborhoodTextField.getText());
+            address.setComplement(this.addressComplementTextField.getText());
+            address.setZipcode(this.addressZipcodeTextField.getText());
+            address.setCity(this.addressCityTextField.getText());
+
+            contact.setResidencialPhone(this.contactResitencialPhoneTextField.getText());
+            contact.setCellPhone(this.contactCellPhoneTextField.getText());
+            contact.setEmail(this.contactEmailTextField.getText());
+
+            client.setAddress(address);
+            client.setContact(contact);
+        } else {
+            client.setName(this.personNameTextField.getText());
+            client.setCpf(this.personCpfTextField.getText());
+            client.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            if (this.clientActiveComboBox.getSelectedIndex() == 0) {
+                client.setActive(true);
+            } else {
+                client.setActive(false);
+            }
+
+            client.getAddress().setStreet(this.addressStreetTextField.getText());
+            client.getAddress().setNeighborhood(this.addressNeiborhoodTextField.getText());
+            client.getAddress().setComplement(this.addressComplementTextField.getText());
+            client.getAddress().setZipcode(this.addressZipcodeTextField.getText());
+            client.getAddress().setCity(this.addressCityTextField.getText());
+
+            client.getContact().setResidencialPhone(this.contactResitencialPhoneTextField.getText());
+            client.getContact().setCellPhone(this.contactCellPhoneTextField.getText());
+            client.getContact().setEmail(this.contactEmailTextField.getText());
+
+        }
+
     }
 }

@@ -19,11 +19,13 @@ public abstract class CrudWindowBase extends JDialog {
     private CrudWindowType windowsType;
     protected abstract void restart();
     protected abstract void fillTextfields();
+    protected abstract void fillObject();
     protected abstract boolean existDependence();
     protected abstract void disableTextfields();
     protected abstract void create();
     protected abstract void update();
     protected abstract void delete();
+     
     
     public CrudWindowBase(Frame parent,boolean modal,CrudWindowType type){
         super(parent, modal);

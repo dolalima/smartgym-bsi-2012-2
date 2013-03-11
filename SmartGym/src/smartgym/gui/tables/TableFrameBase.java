@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  */
 public abstract class TableFrameBase extends JPanel {
 
-    protected abstract Object getSelectedRow();
+    protected abstract Object getSelectedRow();    
 
     protected abstract void updateSelectedRow();
 

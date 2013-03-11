@@ -5,10 +5,11 @@
     <class>smartgym.models.entities.Address</class>
     <class>smartgym.models.entities.Client</class>
     <class>smartgym.models.entities.Contact</class>
-    <class>smartgym.models.entities.Employee</class>    
+    <class>smartgym.models.entities.Employee</class>
     <class>smartgym.models.entities.Person</class>
     <class>smartgym.models.entities.Payment</class>
     <class>smartgym.models.entities.Manager</class>
+    <class>smartgym.models.entities.Activity</class>
     <properties>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="hibernate.connection.username" value="root"/>

@@ -11,18 +11,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Carlos
  */
 @Entity
-public class Employee extends Person {
-    
+public class Employee extends Person {    
     
     private String password;
-    
-    
+    @OneToMany(mappedBy = "employee")
+    private List<Activity> activitys;
 
     public String getPassword() {
         return password;
@@ -32,9 +32,13 @@ public class Employee extends Person {
         this.password = password;
     }
 
-    
-    
-    
+    public List<Activity> getActivitys() {
+        return activitys;
+    }
+
+    public void setActivitys(List<Activity> activitys) {
+        this.activitys = activitys;
+    }
 
     @Override
     public int hashCode() {
