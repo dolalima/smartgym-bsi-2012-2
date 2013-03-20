@@ -4,13 +4,13 @@
  */
 package smartgym.models.entities;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.sql.Date;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import smartgym.models.entities.exceptions.CpfInvalidException;
 
 /**
  *
@@ -21,14 +21,6 @@ public class PersonTest {
     public PersonTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
     }
@@ -37,144 +29,113 @@ public class PersonTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getId method, of class Person.
-     */
     @Test
     public void testGetId() {
         System.out.println("getId");
         Person instance = new Person();
-        Long expResult = null;
+        instance.setId(1l);
+        Long expResult = 1l;
         Long result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setId method, of class Person.
-     */
     @Test
     public void testSetId() {
         System.out.println("setId");
-        Long id = null;
+        Long id = 1l;
         Person instance = new Person();
-        instance.setId(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setId(id);        
     }
 
-    /**
-     * Test of getName method, of class Person.
-     */
     @Test
     public void testGetName() {
         System.out.println("getName");
         Person instance = new Person();
-        String expResult = "";
+        instance.setName("Dola Lima");
+        String expResult = "Dola Lima";
         String result = instance.getName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setName method, of class Person.
-     */
     @Test
     public void testSetName() {
         System.out.println("setName");
-        String name = "";
+        String name = "Dola Lima";
         Person instance = new Person();
         instance.setName(name);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getCpf method, of class Person.
-     */
     @Test
-    public void testGetCpf() {
+    public void testGetCpf()throws Exception {
         System.out.println("getCpf");
-        Person instance = new Person();
-        String expResult = "";
+        Person instance = new Person();       
+        instance.setCpf("070.058.184.74");        
+        String expResult = "070.058.184.74";
         String result = instance.getCpf();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of setCpf method, of class Person.
-     */
     @Test
-    public void testSetCpf() {
+    public void testSetCpf() throws Exception {
         System.out.println("setCpf");
-        String cpf = "";
+        String cpf = "070.058.184-74";
         Person instance = new Person();
         instance.setCpf(cpf);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+    }
+    
+    @Test(expected= CpfInvalidException.class)
+    public void testSetInvalidCpf() throws Exception {
+        System.out.println("setCpf");
+        String cpf = "156584624";
+        Person instance = new Person();
+        instance.setCpf(cpf);        
     }
 
-    /**
-     * Test of getBirthday method, of class Person.
-     */
     @Test
     public void testGetBirthday() {
         System.out.println("getBirthday");
         Person instance = new Person();
-        Date expResult = null;
+        Date date = new Date(1985, 3, 24);
+        instance.setBirthday(date);
+        Date expResult = new Date(1985, 3, 24);
         Date result = instance.getBirthday();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setBirthday method, of class Person.
-     */
     @Test
     public void testSetBirthday() {
         System.out.println("setBirthday");
-        Date birthday = null;
+        Date birthday = new Date(1985, 3, 24);
         Person instance = new Person();
         instance.setBirthday(birthday);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testSetBirthdayByString() {
+        System.out.println("setBirthday");        
+        Person instance = new Person();
+        instance.setBirthday("24/03/1985");
     }
 
-    /**
-     * Test of getContact method, of class Person.
-     */
     @Test
     public void testGetContact() {
         System.out.println("getContact");
         Person instance = new Person();
-        Contact expResult = null;
+        instance.setContact(new Contact());
+        Contact expResult = new Contact();
         Contact result = instance.getContact();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setContact method, of class Person.
-     */
     @Test
     public void testSetContact() {
         System.out.println("setContact");
-        Contact contact = null;
+        Contact contact = new Contact();
         Person instance = new Person();
         instance.setContact(contact);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getAddress method, of class Person.
-     */
     @Test
     public void testGetAddress() {
         System.out.println("getAddress");
@@ -182,90 +143,31 @@ public class PersonTest {
         Address expResult = null;
         Address result = instance.getAddress();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of setAddress method, of class Person.
-     */
     @Test
     public void testSetAddress() {
         System.out.println("setAddress");
-        Address address = null;
+        Address address = new Address();
         Person instance = new Person();
         instance.setAddress(address);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of isActive method, of class Person.
-     */
     @Test
     public void testIsActive() {
         System.out.println("isActive");
         Person instance = new Person();
+        instance.setActive(false);
         boolean expResult = false;
         boolean result = instance.isActive();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of setActive method, of class Person.
-     */
     @Test
     public void testSetActive() {
         System.out.println("setActive");
         boolean active = false;
         Person instance = new Person();
         instance.setActive(active);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of hashCode method, of class Person.
-     */
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Person instance = new Person();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of equals method, of class Person.
-     */
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Person instance = new Person();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toString method, of class Person.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Person instance = new Person();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    }    
 }

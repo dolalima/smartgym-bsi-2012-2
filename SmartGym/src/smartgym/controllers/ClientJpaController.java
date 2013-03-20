@@ -126,5 +126,15 @@ public class ClientJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<Client> findClinteEntitiesByName(String name){
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Client as o where o.name like '"+name+"%'");            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
     
 }

@@ -5,22 +5,30 @@
 package smartgym.gui.tables;
 
 import java.util.List;
-import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import smartgym.models.entities.Client;
 
 /**
  *
  * @author Carlos
  */
-public class ClientTableFrame extends TableFrameBase {
+public class ClientTableFrame extends TableFrameBase implements TableInterface{
+
+    List<Client> clientList;
 
     /**
      * Creates new form ClientTableFrame
      */
     public ClientTableFrame() {
-        initComponents();
-        this.setTableHeaderl(new String[]{"cpf", "nome", "vencimento", "status"});
-    }
+        super();
+        //initComponents();
+        this.setTableHeader(new String[]{"cpf", "nome", "vencimento", "status"});
+
+        getObjectTable().setModel(new DefaultTableModel(new Object[0][0], getTableHeader()));
+        getObjectTable().setVisible(true);
+
+
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,63 +39,45 @@ public class ClientTableFrame extends TableFrameBase {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-
         setLayout(new java.awt.BorderLayout());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Cpf", "Nome", "Vencimento", "Regular"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    protected Object getSelectedRow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public void updateTable() {
+        fillTable();
     }
 
     @Override
-    protected void updateSelectedRow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void fillTable() {
+        Object[][] dados = new Object[clientList.size()][4];
 
-    @Override
-    protected void updateTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected void fillTable(List objectList) {
-        Object[][] dados = new Object[objectList.size()][4];
-
-        for (int i = 0; i < objectList.size(); i++) {
-            Client client = (Client) objectList.get(i);
+        for (int i = 0; i < clientList.size(); i++) {
+            Client client = (Client) clientList.get(i);
             dados[i][0] = client.getCpf();
             dados[i][1] = client.getName();
             dados[i][2] = client.getPaymentDay();
             if (client.isRegular()) {
-                dados[i][3] = "sim";
+                dados[i][3] = "Sim";
             } else {
-                dados[i][3] = "não";
+                dados[i][3] = "Não";
             }
-            
-            this.setTable(new JTable(dados, this.getTableHeaderl()));
+
+            getObjectTable().setModel(new DefaultTableModel(dados, this.getTableHeader()));
 
         }
+    }
+    
+    @Override
+    public void setObjectList(List objectList) {
+        clientList = (List<Client>) objectList;
+        updateTable();
+    }
+
+    @Override
+    public Object getSelectRow() {
+        int index = this.getObjectTable().getSelectedRow();
+        return this.clientList.get(index);
     }
 }

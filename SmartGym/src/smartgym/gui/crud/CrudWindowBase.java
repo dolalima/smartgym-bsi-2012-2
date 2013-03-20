@@ -5,6 +5,7 @@
 package smartgym.gui.crud;
 
 import java.awt.Frame;
+import javax.persistence.EntityManagerFactory;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -17,25 +18,38 @@ import javax.swing.JOptionPane;
 public abstract class CrudWindowBase extends JDialog {
     
     private CrudWindowType windowsType;
+    private final EntityManagerFactory entityManagerFactory;
     protected abstract void restart();
-    protected abstract void fillTextfields();
+    protected abstract void fillTextFields();
+    protected abstract void cleanTextFields();
     protected abstract void fillObject();
     protected abstract boolean existDependence();
-    protected abstract void disableTextfields();
+    protected abstract void disableTextFields();
+    protected abstract void enableTextFields();
     protected abstract void create();
     protected abstract void update();
     protected abstract void delete();
      
     
-    public CrudWindowBase(Frame parent,boolean modal,CrudWindowType type){
+    public CrudWindowBase(Frame parent,boolean modal,CrudWindowType type,EntityManagerFactory emf){
         super(parent, modal);
         this.windowsType = type;
+        this.entityManagerFactory = emf;
     }
 
     public CrudWindowType getWindowsType() {
-        return windowsType;
-    } 
-    
+        return windowsType;        
+    }
+
+    public void setWindowsType(CrudWindowType windowsType) {
+        
+        this.windowsType = windowsType;
+        this.restart();
+    }
+
+    public EntityManagerFactory getEntityManagerFactory(){
+        return this.entityManagerFactory;
+    }   
 
     protected void cancel(){
         int resp = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja cancelar?", "Sair", JOptionPane.YES_NO_OPTION);

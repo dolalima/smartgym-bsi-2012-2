@@ -33,6 +33,8 @@ public class Payment implements Serializable {
     @ManyToOne
     @JoinColumn(name="employee")    
     private Employee employee;
+    private boolean paid =false;
+    
 
     public Long getId() {
         return id;
@@ -75,7 +77,13 @@ public class Payment implements Serializable {
     }
     
     
-    
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
     
 
     @Override

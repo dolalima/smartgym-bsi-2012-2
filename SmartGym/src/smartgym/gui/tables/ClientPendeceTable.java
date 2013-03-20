@@ -6,20 +6,22 @@ package smartgym.gui.tables;
 
 import java.util.List;
 import javax.swing.JCheckBox;
+import smartgym.models.entities.Client;
 import smartgym.models.entities.Payment;
 
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ClientPendeceTable extends TableFrameBase {
-
+public class ClientPendeceTable extends TableFrameBase implements TableInterface{
+    
+    List<Client> clientList;
     /**
      * Creates new form ClientPendeceTable
      */
     public ClientPendeceTable() {
         initComponents();
-        this.setTableHeaderl(new String[]{"", "Data"});
+        this.setTableHeader(new String[]{"", "Data"});
 
     }
 
@@ -47,31 +49,21 @@ public class ClientPendeceTable extends TableFrameBase {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    protected Object getSelectedRow() {
+    public Object getSelectRow() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateSelectedRow() {
+    public void fillTable() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateTable() {
+    public void setObjectList(List object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    protected void fillTable(List objectList) {
-        Object[][] dados = new Object[objectList.size()][2];
-
-        for (int i = 0; i < objectList.size(); i++) {
-            Payment payment = (Payment) objectList.get(i);
-            JCheckBox checkbox = new JCheckBox();
-            checkbox.addActionListener(null);
-            dados[i][0] = checkbox;
-            dados[i][1] = payment.getPaymentedDay();
-
-        }
-    }
+   
+    
+        
 }

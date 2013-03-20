@@ -5,9 +5,7 @@
 package smartgym.models.entities;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,14 +18,6 @@ public class AddressTest {
     public AddressTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
     }
@@ -36,208 +26,112 @@ public class AddressTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getId method, of class Address.
-     */
     @Test
     public void testGetId() {
         System.out.println("getId");
         Address instance = new Address();
-        Long expResult = null;
+        instance.setId(1l);
+        Long expResult = 1l;
         Long result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setId method, of class Address.
-     */
     @Test
     public void testSetId() {
         System.out.println("setId");
-        Long id = null;
+        Long id = 1l;
         Address instance = new Address();
-        instance.setId(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setId(id);        
     }
 
-    /**
-     * Test of getStreet method, of class Address.
-     */
     @Test
     public void testGetStreet() {
         System.out.println("getStreet");
         Address instance = new Address();
-        String expResult = "";
+        instance.setStreet("Rua Jardim Betânia nº75");
+        String expResult = "Rua Jardim Betânia nº75";
         String result = instance.getStreet();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setStreet method, of class Address.
-     */
     @Test
     public void testSetStreet() {
         System.out.println("setStreet");
-        String street = "";
+        String street = "Rua Jardim Betânia nº75";
         Address instance = new Address();
-        instance.setStreet(street);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setStreet(street);        
     }
 
-    /**
-     * Test of getNeighborhood method, of class Address.
-     */
     @Test
     public void testGetNeighborhood() {
         System.out.println("getNeighborhood");
         Address instance = new Address();
-        String expResult = "";
+        instance.setNeighborhood("Livramento");
+        String expResult = "Livramento";
         String result = instance.getNeighborhood();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setNeighborhood method, of class Address.
-     */
     @Test
     public void testSetNeighborhood() {
         System.out.println("setNeighborhood");
-        String neighborhood = "";
+        String neighborhood = "Livramento";
         Address instance = new Address();
         instance.setNeighborhood(neighborhood);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
-    /**
-     * Test of getComplement method, of class Address.
-     */
     @Test
     public void testGetComplement() {
         System.out.println("getComplement");
         Address instance = new Address();
-        String expResult = "";
+        instance.setComplement("Casa");
+        String expResult = "Casa";
         String result = instance.getComplement();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setComplement method, of class Address.
-     */
     @Test
     public void testSetComplement() {
         System.out.println("setComplement");
-        String complement = "";
+        String complement = "Casa";
         Address instance = new Address();
-        instance.setComplement(complement);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setComplement(complement);        
     }
 
-    /**
-     * Test of getCity method, of class Address.
-     */
     @Test
     public void testGetCity() {
         System.out.println("getCity");
         Address instance = new Address();
-        String expResult = "";
+        instance.setCity("Vitória de Santo Antão");
+        String expResult = "Vitória de Santo Antão";
         String result = instance.getCity();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setCity method, of class Address.
-     */
     @Test
     public void testSetCity() {
         System.out.println("setCity");
-        String city = "";
+        String city = "Vitória de Santo Antão";
         Address instance = new Address();
         instance.setCity(city);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getZipcode method, of class Address.
-     */
     @Test
     public void testGetZipcode() {
         System.out.println("getZipcode");
         Address instance = new Address();
-        String expResult = "";
+        instance.setZipcode("55602-380");
+        String expResult = "55602-380";
         String result = instance.getZipcode();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of setZipcode method, of class Address.
-     */
     @Test
     public void testSetZipcode() {
         System.out.println("setZipcode");
-        String zipcode = "";
+        String zipcode = "55602-380";
         Address instance = new Address();
-        instance.setZipcode(zipcode);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of hashCode method, of class Address.
-     */
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Address instance = new Address();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of equals method, of class Address.
-     */
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Address instance = new Address();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toString method, of class Address.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Address instance = new Address();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setZipcode(zipcode);        
     }
 }

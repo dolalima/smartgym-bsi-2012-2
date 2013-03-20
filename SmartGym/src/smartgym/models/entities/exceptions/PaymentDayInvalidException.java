@@ -8,12 +8,10 @@ package smartgym.models.entities.exceptions;
  *
  * @author Carlos
  */
-public class CpfInvalidLengthException extends Exception {
+public class PaymentDayInvalidException extends Exception {
 
-    public CpfInvalidLengthException(String message) {
-        super(message);
+    public PaymentDayInvalidException(String messengem) {
+        super(messengem);
     }
-    
-    
     
 }

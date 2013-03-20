@@ -6,12 +6,13 @@ package smartgym.controllers;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import smartgym.configuration.HibernateConfig;
 import smartgym.models.entities.Person;
 
 /**
@@ -20,81 +21,58 @@ import smartgym.models.entities.Person;
  */
 public class PersonJpaControllerTest {
     
+    private EntityManagerFactory emf;
+    
     public PersonJpaControllerTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
     }
     
     @Before
     public void setUp() {
+        HibernateConfig.CreatePersistenceTables();
+        this.emf = Persistence.createEntityManagerFactory("SmartGymPU");
     }
     
     @After
     public void tearDown() {
+        this.emf.close();
     }
 
-    /**
-     * Test of getEntityManager method, of class PersonJpaController.
-     */
     @Test
     public void testGetEntityManager() {
         System.out.println("getEntityManager");
-        PersonJpaController instance = null;
-        EntityManager expResult = null;
+        PersonJpaController instance = new PersonJpaController(this.emf);
+        EntityManager expResult = this.emf.createEntityManager();
         EntityManager result = instance.getEntityManager();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
-    /**
-     * Test of create method, of class PersonJpaController.
-     */
     @Test
     public void testCreate() {
         System.out.println("create");
         Person person = null;
         PersonJpaController instance = null;
         instance.create(person);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of edit method, of class PersonJpaController.
-     */
     @Test
     public void testEdit() throws Exception {
         System.out.println("edit");
         Person person = null;
         PersonJpaController instance = null;
         instance.edit(person);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of destroy method, of class PersonJpaController.
-     */
     @Test
     public void testDestroy() throws Exception {
         System.out.println("destroy");
         Long id = null;
         PersonJpaController instance = null;
         instance.destroy(id);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of findPersonEntities method, of class PersonJpaController.
-     */
     @Test
     public void testFindPersonEntities_0args() {
         System.out.println("findPersonEntities");
@@ -102,13 +80,9 @@ public class PersonJpaControllerTest {
         List expResult = null;
         List result = instance.findPersonEntities();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of findPersonEntities method, of class PersonJpaController.
-     */
     @Test
     public void testFindPersonEntities_int_int() {
         System.out.println("findPersonEntities");
@@ -118,13 +92,9 @@ public class PersonJpaControllerTest {
         List expResult = null;
         List result = instance.findPersonEntities(maxResults, firstResult);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of findPerson method, of class PersonJpaController.
-     */
     @Test
     public void testFindPerson() {
         System.out.println("findPerson");
@@ -133,13 +103,9 @@ public class PersonJpaControllerTest {
         Person expResult = null;
         Person result = instance.findPerson(id);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getPersonCount method, of class PersonJpaController.
-     */
     @Test
     public void testGetPersonCount() {
         System.out.println("getPersonCount");
@@ -147,7 +113,6 @@ public class PersonJpaControllerTest {
         int expResult = 0;
         int result = instance.getPersonCount();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 }

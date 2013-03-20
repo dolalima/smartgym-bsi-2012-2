@@ -4,14 +4,9 @@
  */
 package smartgym.models.entities;
 
-import java.io.Serializable;
-import java.util.List;
+import smartgym.models.entities.exceptions.PaymentDayInvalidException;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
 
 /**
  *
@@ -29,8 +24,13 @@ public class Client extends Person {
         return paymentDay;
     }
 
-    public void setPaymentDay(int paymentDay) {
-        this.paymentDay = paymentDay;
+    public void setPaymentDay(int paymentDay) throws PaymentDayInvalidException {
+        if(paymentDay<1 && paymentDay >31){
+            throw new PaymentDayInvalidException("Data de pagamento invalida");
+        }else{
+            this.paymentDay = paymentDay;
+        }
+        
     }
 
     public boolean isRegular() {
@@ -40,11 +40,7 @@ public class Client extends Person {
     public void setRegular(boolean regular) {
         this.regular = regular;
     }
-
     
-    
-    
-
     @Override
     public int hashCode() {
         int hash = 0;

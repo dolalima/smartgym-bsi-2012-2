@@ -5,9 +5,7 @@
 package smartgym.models.entities;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,14 +18,6 @@ public class EmployeeTest {
     public EmployeeTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
     }
@@ -36,9 +26,6 @@ public class EmployeeTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getPassword method, of class Employee.
-     */
     @Test
     public void testGetPassword() {
         System.out.println("getPassword");
@@ -46,26 +33,18 @@ public class EmployeeTest {
         String expResult = "";
         String result = instance.getPassword();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of setPassword method, of class Employee.
-     */
     @Test
     public void testSetPassword() {
         System.out.println("setPassword");
         String password = "";
         Employee instance = new Employee();
         instance.setPassword(password);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of hashCode method, of class Employee.
-     */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
@@ -73,13 +52,9 @@ public class EmployeeTest {
         int expResult = 0;
         int result = instance.hashCode();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of equals method, of class Employee.
-     */
     @Test
     public void testEquals() {
         System.out.println("equals");
@@ -88,13 +63,9 @@ public class EmployeeTest {
         boolean expResult = false;
         boolean result = instance.equals(object);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of toString method, of class Employee.
-     */
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -102,7 +73,6 @@ public class EmployeeTest {
         String expResult = "";
         String result = instance.toString();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Carlos
  */
-public class EmployeeTableFrame extends TableFrameBase {
+public class EmployeeTableFrame extends TableFrameBase implements TableInterface{
 
     /**
      * Creates new form EmployeeTableFrame
@@ -43,22 +43,21 @@ public class EmployeeTableFrame extends TableFrameBase {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    protected Object getSelectedRow() {
+    public Object getSelectRow() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateSelectedRow() {
+    public void fillTable() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateTable() {
+    public void setObjectList(List object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    protected void fillTable(List objectList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }
+
+    

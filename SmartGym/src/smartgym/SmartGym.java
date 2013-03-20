@@ -14,6 +14,7 @@ import smartgym.controllers.ClientJpaController;
 import smartgym.controllers.ContactJpaController;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.controllers.PaymentJpaController;
+import smartgym.gui.MainWindow;
 
 
 import smartgym.models.entities.Address;
@@ -21,6 +22,7 @@ import smartgym.models.entities.Client;
 import smartgym.models.entities.Contact;
 import smartgym.models.entities.Employee;
 import smartgym.models.entities.Payment;
+import smartgym.persistence.PersistenceUnit;
 
 
 
@@ -29,20 +31,36 @@ import smartgym.models.entities.Payment;
  *
  * @author Carlos
  */
-public class SmartGym {
+public final class SmartGym {
+    
+    
+    
+    
+    public SmartGym(){
+        PersistenceUnit.start();
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setVisible(true);
+        PersistenceUnit.close();
+        
+    }
+
+    
+    
+    
+    
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        
+        //HibernateConfig.CreatePersistenceTables();
+        SmartGym smartGym = new SmartGym();
         
 
 
 //        HibernateConfig.CreatePersistenceTables();
-//
-//
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
 //        
 //        

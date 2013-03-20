@@ -12,14 +12,14 @@ import smartgym.models.entities.Payment;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ClientInadimplentTable extends TableFrameBase {
+public class ClientInadimplentTable extends TableFrameBase implements TableInterface{
 
     /**
      * Creates new form ClientInadimplentTable
      */
     public ClientInadimplentTable() {
         initComponents();
-        this.setTableHeaderl(new String[]{"", "Data"});
+        this.setTableHeader(new String[]{"", "Data"});
         
     }
 
@@ -47,31 +47,21 @@ public class ClientInadimplentTable extends TableFrameBase {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    protected Object getSelectedRow() {
+    public Object getSelectRow() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateSelectedRow() {
+    public void fillTable() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void updateTable() {
+    public void setObjectList(List object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    protected void fillTable(List objectList) {
-        Object[][] dados = new Object[objectList.size()][2];
+    
 
-        for (int i = 0; i < objectList.size(); i++) {
-            Payment payment = (Payment) objectList.get(i);
-            JCheckBox checkbox = new JCheckBox();
-            checkbox.addActionListener(null);
-            dados[i][0] = checkbox;
-            dados[i][1] = payment.getPaymentedDay();
-
-        }
-    }
+    
 }

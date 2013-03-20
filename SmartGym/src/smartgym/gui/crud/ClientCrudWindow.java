@@ -4,6 +4,7 @@
  */
 package smartgym.gui.crud;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -17,6 +18,9 @@ import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.models.entities.Address;
 import smartgym.models.entities.Client;
 import smartgym.models.entities.Contact;
+import smartgym.models.entities.exceptions.CpfInvalidException;
+import smartgym.models.entities.exceptions.PaymentDayInvalidException;
+import smartgym.persistence.PersistenceUnit;
 
 /**
  *
@@ -29,9 +33,23 @@ public class ClientCrudWindow extends CrudWindowBase {
     /**
      * Creates new form ClientWindowDialog
      */
-    public ClientCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type) {
-        super(parent, modal, type);
+    public ClientCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type, EntityManagerFactory emf) {
+        super(parent, modal, type, emf);
         initComponents();
+        switch (type) {
+            case CREATE:
+                actionButton.setText("Salvar");
+                break;
+            case UPDATE:
+                actionButton.setText("Atualizar");
+                break;
+            case REMOVE:
+                actionButton.setText("Remover");
+                break;
+            case VIEW:
+                actionButton.setVisible(false);
+                break;
+        }
     }
 
     /**
@@ -83,6 +101,9 @@ public class ClientCrudWindow extends CrudWindowBase {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(440, 480));
+        setPreferredSize(new java.awt.Dimension(440, 480));
+        setResizable(false);
 
         mainPanel.setPreferredSize(getPreferredSize());
         mainPanel.setLayout(new java.awt.BorderLayout());
@@ -295,6 +316,11 @@ public class ClientCrudWindow extends CrudWindowBase {
         mainPanel.add(personCrudPanel, java.awt.BorderLayout.PAGE_START);
 
         cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         actionButton.setText("Ação");
         actionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -360,7 +386,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                     .addComponent(clientActiveComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(paydayLabel)
                     .addComponent(paydaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         mainPanel.add(optionCrudPanel, java.awt.BorderLayout.CENTER);
@@ -384,12 +410,20 @@ public class ClientCrudWindow extends CrudWindowBase {
         switch (this.getWindowsType()) {
             case CREATE:
                 this.create();
+                break;
             case UPDATE:
                 this.update();
+                break;
             case REMOVE:
                 this.delete();
+                break;
         }
     }//GEN-LAST:event_actionButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        this.cancel();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,13 +441,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClientCrudWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClientCrudWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClientCrudWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ClientCrudWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -422,7 +450,8 @@ public class ClientCrudWindow extends CrudWindowBase {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ClientCrudWindow dialog = new ClientCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE);
+                PersistenceUnit.start();
+                ClientCrudWindow dialog = new ClientCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE, PersistenceUnit.getEntityManagerFactory());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -430,6 +459,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                     }
                 });
                 dialog.setVisible(true);
+                PersistenceUnit.close();
             }
         });
     }
@@ -474,11 +504,36 @@ public class ClientCrudWindow extends CrudWindowBase {
 
     @Override
     protected void restart() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch (this.getWindowsType()) {
+            case CREATE:                
+                actionButton.setText("Salvar");
+                actionButton.setVisible(true);
+                this.client = null;
+                enableTextFields();
+                cleanTextFields();
+                break;
+            case UPDATE:
+                actionButton.setText("Atualizar");
+                actionButton.setVisible(true);
+                enableTextFields();
+                fillTextFields();
+                break;
+            case REMOVE:
+                actionButton.setText("Remover");
+                actionButton.setVisible(true);
+                fillObject();
+                fillTextFields();
+                break;
+            case VIEW:
+                actionButton.setVisible(false);
+                fillObject();
+                fillTextFields();
+                break;
+        }
     }
 
     @Override
-    protected void fillTextfields() {
+    protected void fillTextFields() {
         if (client != null) {
 
             personNameTextField.setText(client.getName());
@@ -535,8 +590,11 @@ public class ClientCrudWindow extends CrudWindowBase {
         return dependence;
     }
 
+    /*
+     * Disabilita os campos do formulario do Crud de Client.
+     */
     @Override
-    protected void disableTextfields() {
+    protected void disableTextFields() {
 
         personNameTextField.setEnabled(false);
         personCpfTextField.setEnabled(false);
@@ -550,34 +608,47 @@ public class ClientCrudWindow extends CrudWindowBase {
         addressComplementTextField.setEnabled(false);
         addressZipcodeTextField.setEnabled(false);
         addressCityTextField.setEnabled(false);
+        paydaySpinner.setEnabled(false);
     }
 
     @Override
     protected void create() {
         if (!this.existDependence()) {
             fillObject();
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
-            ClientJpaController clienteController = new ClientJpaController(emf);
+            ClientJpaController clienteController = new ClientJpaController(this.getEntityManagerFactory());
             clienteController.create(client);
-            emf.close();
+
         } else {
         }
+        JOptionPane.showMessageDialog(this, "Cliente cadastrado com sussesso");
+        
+        
+        int resp = JOptionPane.showConfirmDialog(this, "Deseja Cadastrar ou Cliente?", "Sair", JOptionPane.YES_NO_OPTION);
+
+        if(resp == JOptionPane.YES_OPTION){            
+            restart();
+        }else{
+            this.dispose();
+        }
+
     }
 
     @Override
     protected void update() {
         if (!this.existDependence()) {
             fillObject();
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
-            ClientJpaController clienteController = new ClientJpaController(emf);
+
+            ClientJpaController clienteController = new ClientJpaController(this.getEntityManagerFactory());
             try {
                 clienteController.edit(client);
+                JOptionPane.showMessageDialog(this, "Cliente atualizado  com sussesso");
+                this.dispose();
             } catch (NonexistentEntityException ex) {
                 Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
                 Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-            emf.close();
+
         } else {
         }
 
@@ -586,8 +657,8 @@ public class ClientCrudWindow extends CrudWindowBase {
     @Override
     protected void delete() {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
-        ClientJpaController clienteController = new ClientJpaController(emf);
+
+        ClientJpaController clienteController = new ClientJpaController(this.getEntityManagerFactory());
         try {
             clienteController.destroy(client.getId());
         } catch (NonexistentEntityException ex) {
@@ -595,7 +666,7 @@ public class ClientCrudWindow extends CrudWindowBase {
         } catch (Exception ex) {
             Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-        emf.close();
+
     }
 
     @Override
@@ -606,8 +677,15 @@ public class ClientCrudWindow extends CrudWindowBase {
             Contact contact = new Contact();
 
             client.setName(this.personNameTextField.getText());
-            client.setCpf(this.personCpfTextField.getText());
-            client.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            try {
+                client.setCpf(this.personCpfTextField.getText());
+            } catch (CpfInvalidException ex) {
+                JOptionPane.showMessageDialog(this, "Cpf invalido.");
+                return;
+            }
+
+            client.setBirthday(personBirthdayTextField.getText());
+
             if (this.clientActiveComboBox.getSelectedIndex() == 0) {
                 client.setActive(true);
             } else {
@@ -628,8 +706,13 @@ public class ClientCrudWindow extends CrudWindowBase {
             client.setContact(contact);
         } else {
             client.setName(this.personNameTextField.getText());
-            client.setCpf(this.personCpfTextField.getText());
-            client.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            try {
+                client.setCpf(this.personCpfTextField.getText());
+            } catch (CpfInvalidException ex) {
+                JOptionPane.showMessageDialog(this, "Cpf invalido.");
+                return;
+            }
+            client.setBirthday(this.personBirthdayTextField.getText());
             if (this.clientActiveComboBox.getSelectedIndex() == 0) {
                 client.setActive(true);
             } else {
@@ -645,8 +728,65 @@ public class ClientCrudWindow extends CrudWindowBase {
             client.getContact().setResidencialPhone(this.contactResitencialPhoneTextField.getText());
             client.getContact().setCellPhone(this.contactCellPhoneTextField.getText());
             client.getContact().setEmail(this.contactEmailTextField.getText());
+            try {
+                client.setPaymentDay((int) this.paydaySpinner.getValue());
+            } catch (PaymentDayInvalidException ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+             
 
         }
 
+    }
+
+    @Override
+    protected void cleanTextFields() {
+        if (client == null) {
+
+            personNameTextField.setText("");
+            personCpfTextField.setText("");
+            personBirthdayTextField.setText("");
+
+            addressStreetTextField.setText("");
+            addressNeiborhoodTextField.setText("");
+            addressComplementTextField.setText("");
+            addressZipcodeTextField.setText("");
+            addressCityTextField.setText("");
+
+            contactResitencialPhoneTextField.setText("");
+            contactCellPhoneTextField.setText("");
+            contactEmailTextField.setText("");
+
+            clientActiveComboBox.setSelectedIndex(0);
+
+            paydaySpinner.setValue(1);
+        }
+    }
+
+    @Override
+    protected void enableTextFields() {
+        personNameTextField.setEnabled(true);
+        personCpfTextField.setEnabled(true);
+        personBirthdayTextField.setEnabled(true);
+        contactResitencialPhoneTextField.setEnabled(true);
+        contactCellPhoneTextField.setEnabled(true);
+        contactResitencialPhoneTextField.setEnabled(true);
+        contactEmailTextField.setEnabled(true);
+        addressStreetTextField.setEnabled(true);
+        addressNeiborhoodTextField.setEnabled(true);
+        addressComplementTextField.setEnabled(true);
+        addressZipcodeTextField.setEnabled(true);
+        addressCityTextField.setEnabled(true);
+        paydaySpinner.setEnabled(true);
+        
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

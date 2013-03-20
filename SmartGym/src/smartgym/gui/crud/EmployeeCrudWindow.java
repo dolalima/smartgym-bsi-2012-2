@@ -11,11 +11,14 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.models.entities.Address;
 import smartgym.models.entities.Contact;
 import smartgym.models.entities.Employee;
+import smartgym.models.entities.exceptions.CpfInvalidException;
+import smartgym.persistence.PersistenceUnit;
 
 /**
  *
@@ -28,8 +31,8 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     /**
      * Creates new form EmployeeWindow
      */
-    public EmployeeCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type) {
-        super(parent, modal, type);
+    public EmployeeCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type, EntityManagerFactory emf) {
+        super(parent, modal, type, emf);
         initComponents();
     }
 
@@ -428,7 +431,8 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                EmployeeCrudWindow dialog = new EmployeeCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE);
+                PersistenceUnit.start();
+                EmployeeCrudWindow dialog = new EmployeeCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE,PersistenceUnit.getEntityManagerFactory());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -436,6 +440,7 @@ public class EmployeeCrudWindow extends CrudWindowBase {
                     }
                 });
                 dialog.setVisible(true);
+                PersistenceUnit.close();
             }
         });
     }
@@ -485,7 +490,7 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     }
 
     @Override
-    protected void fillTextfields() {
+    protected void fillTextFields() {
         if (employee != null) {
 
             personNameTextField.setText(employee.getName());
@@ -552,7 +557,7 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     }
 
     @Override
-    protected void disableTextfields() {
+    protected void disableTextFields() {
         personNameTextField.setEnabled(false);
         personCpfTextField.setEnabled(false);
         personBirthdayTextField.setEnabled(false);
@@ -619,8 +624,13 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             Contact contact = new Contact();
 
             employee.setName(this.personNameTextField.getText());
-            employee.setCpf(this.personCpfTextField.getText());
-            employee.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            try {
+                employee.setCpf(this.personCpfTextField.getText());
+            } catch (CpfInvalidException ex) {
+                JOptionPane.showMessageDialog(this, "Cpf invalido.");
+                return;
+            }
+            employee.setBirthday(this.personBirthdayTextField.getText());
 
             address.setStreet(this.addressStreetTextField.getText());
             address.setNeighborhood(this.addressNeiborhoodTextField.getText());
@@ -642,8 +652,13 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             employee.setContact(contact);
         } else {
             employee.setName(this.personNameTextField.getText());
-            employee.setCpf(this.personCpfTextField.getText());
-            employee.setBirthday(new Date(this.personBirthdayTextField.getText()));
+            try {
+                employee.setCpf(this.personCpfTextField.getText());
+            } catch (CpfInvalidException ex) {
+                JOptionPane.showMessageDialog(this, "Cpf invalido.");
+                return;
+            }
+            employee.setBirthday(this.personBirthdayTextField.getText());
 
             if (this.employeeActiveComboBox.getSelectedIndex() == 0) {
                 employee.setActive(true);
@@ -662,5 +677,15 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             employee.getContact().setEmail(this.contactEmailTextField.getText());
 
         }
+    }
+
+    @Override
+    protected void cleanTextFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void enableTextFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
