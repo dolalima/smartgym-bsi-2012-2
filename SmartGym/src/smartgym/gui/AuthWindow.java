@@ -10,6 +10,7 @@ import smartgym.controllers.ManagerJpaController;
 import smartgym.models.entities.Employee;
 import smartgym.models.entities.Manager;
 import smartgym.persistence.PersistenceUnit;
+import smartgym.utilities.Encrypter;
 
 /**
  *
@@ -17,7 +18,7 @@ import smartgym.persistence.PersistenceUnit;
  */
 public class AuthWindow extends javax.swing.JFrame {
     
-    Employee employee;
+    
     EmployeeJpaController employeeController;
     ManagerJpaController managerController;
     MainWindow mainWindow;
@@ -153,15 +154,22 @@ public class AuthWindow extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String login = loginTextField.getText();
-        String password = passwordTextField.getText();
+        String password;
+        password = Encrypter.md5(String.valueOf(passwordTextField.getPassword()));
         
-        Employee employee = employeeController.findEmployeeByLogin(login, password);
+        Employee employee;
+        employee = employeeController.findEmployeeByLogin(login, password);
         if(employee!=null){
             Manager manager = managerController.findManager(employee.getId());
             if(manager!=null){
+                this.dispose();
                 mainWindow = new MainWindow(manager);
+                mainWindow.setVisible(true);
+                
             }else{
+                this.dispose();
                 mainWindow = new MainWindow(employee);
+                mainWindow.setVisible(true);
             }
         }else{
             JOptionPane.showMessageDialog(this, "Login ou senha incorreta!");

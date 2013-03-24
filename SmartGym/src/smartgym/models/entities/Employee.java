@@ -27,6 +27,10 @@ public class Employee extends Person {
     public void setPassword(String password) {
         this.password = Encrypter.md5(password);
     }
+    
+    public void setPassword(char[] password) {
+        this.setPassword(String.valueOf(password));
+    }
 
     public List<Activity> getActivitys() {
         return activitys;
@@ -60,5 +64,5 @@ public class Employee extends Person {
     public String toString() {
         return "smartgym.models.entities.Employee[ id=" + this.getId() + " ]";
     }
-    
+   
 }

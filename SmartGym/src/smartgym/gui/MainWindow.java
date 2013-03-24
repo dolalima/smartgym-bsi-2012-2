@@ -54,13 +54,13 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     MainWindow(Manager manager) {
-        super();
+        this();
         this.mode = ApplicationMode.MANAGER_MODE;
         this.employee = manager;
     }
 
     public MainWindow(Employee employee) {
-        super();
+        this();
         mode = ApplicationMode.EMPLOYEE_MODE;
         this.employee = employee;
         financeButton.setVisible(false);

@@ -580,8 +580,7 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             contactResitencialPhoneTextField.setText(employee.getContact().getResidencialPhone());
             contactCellPhoneTextField.setText(employee.getContact().getCellPhone());
             contactEmailTextField.setText(employee.getContact().getEmail());
-
-            employeePasswordField.getText();
+            
 
             if (employee.isActive()) {
                 employeeActiveComboBox.setSelectedIndex(0);
@@ -613,8 +612,10 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             dependence = true;
         }
 
-        if (this.employeePasswordField.getText().length() > 3) {
-            if (!(this.employeePasswordField.getText().equals(employeePasswordFieldClone.getText()))) {
+        if (this.employeePasswordField.getPassword().length > 3) {
+            String password = String.valueOf(this.employeePasswordField.getPassword());
+            String passwordClone = String.valueOf(this.employeePasswordFieldClone.getPassword());
+            if (!(password.equals(passwordClone))) {
                 dependenceList = dependenceList + "-SENHAS DIVERGEM-\n";
                 dependence = true;
             }
@@ -644,6 +645,8 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         addressComplementTextField.setEnabled(false);
         addressZipcodeTextField.setEnabled(false);
         addressCityTextField.setEnabled(false);
+        employeePasswordField.setEnabled(false);
+        employeePasswordFieldClone.setEnabled(false);
     }
 
     @Override
@@ -732,6 +735,9 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
             employee.setAddress(address);
             employee.setContact(contact);
+            
+            employee.setPassword(employeePasswordField.getPassword());
+            
         } else {
             employee.setName(this.personNameTextField.getText());
             try {
@@ -758,18 +764,51 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             employee.getContact().setCellPhone(this.contactCellPhoneTextField.getText());
             employee.getContact().setEmail(this.contactEmailTextField.getText());
 
-            employee.setPassword(employeePasswordField.getText());
+            employee.setPassword(employeePasswordField.getPassword());
 
         }
     }
 
     @Override
     protected void cleanTextFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (employee == null) {
+
+            personNameTextField.setText("");
+            personCpfTextField.setText("");
+            personBirthdayTextField.setText("");
+
+            addressStreetTextField.setText("");
+            addressNeiborhoodTextField.setText("");
+            addressComplementTextField.setText("");
+            addressZipcodeTextField.setText("");
+            addressCityTextField.setText("");
+
+            contactResitencialPhoneTextField.setText("");
+            contactCellPhoneTextField.setText("");
+            contactEmailTextField.setText("");
+
+            employeeActiveComboBox.setSelectedIndex(0);
+
+            employeePasswordFieldClone.setText("");
+            employeePasswordField.setText("");
+        }
     }
 
     @Override
     protected void enableTextFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        personNameTextField.setEnabled(true);
+        personCpfTextField.setEnabled(true);
+        personBirthdayTextField.setEnabled(true);
+        contactResitencialPhoneTextField.setEnabled(true);
+        contactCellPhoneTextField.setEnabled(true);
+        contactResitencialPhoneTextField.setEnabled(true);
+        contactEmailTextField.setEnabled(true);
+        addressStreetTextField.setEnabled(true);
+        addressNeiborhoodTextField.setEnabled(true);
+        addressComplementTextField.setEnabled(true);
+        addressZipcodeTextField.setEnabled(true);
+        addressCityTextField.setEnabled(true);
+        employeePasswordField.setEnabled(true);
+        employeePasswordFieldClone.setEnabled(true);
     }
 }

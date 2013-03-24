@@ -14,6 +14,7 @@ import smartgym.controllers.ClientJpaController;
 import smartgym.controllers.ContactJpaController;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.controllers.PaymentJpaController;
+import smartgym.gui.AuthWindow;
 import smartgym.gui.MainWindow;
 
 
@@ -38,8 +39,13 @@ public final class SmartGym {
     
     public SmartGym(){
         PersistenceUnit.start();
-        MainWindow mainWindow = new MainWindow();
-        mainWindow.setVisible(true);
+        
+        AuthWindow authWindow = new AuthWindow();
+        authWindow.setVisible(true);
+        
+        //MainWindow mainWindow = new MainWindow();
+        //mainWindow.setVisible(true);
+        
         PersistenceUnit.close();
         
     }

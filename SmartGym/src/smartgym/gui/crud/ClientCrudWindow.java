@@ -375,7 +375,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                 .addComponent(paydayLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paydaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
         optionCrudPanelLayout.setVerticalGroup(
             optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -684,6 +684,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                 JOptionPane.showMessageDialog(this, "Cpf invalido.");
                 return;
             }
+            
 
             client.setBirthday(personBirthdayTextField.getText());
 
@@ -705,6 +706,11 @@ public class ClientCrudWindow extends CrudWindowBase {
 
             client.setAddress(address);
             client.setContact(contact);
+            try {
+                client.setPaymentDay((int) this.paydaySpinner.getValue());
+            } catch (PaymentDayInvalidException ex) {
+                Logger.getLogger(ClientCrudWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             client.setName(this.personNameTextField.getText());
             try {

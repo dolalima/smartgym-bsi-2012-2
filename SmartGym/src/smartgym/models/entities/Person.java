@@ -7,6 +7,10 @@ package smartgym.models.entities;
 import smartgym.models.entities.exceptions.CpfInvalidException;
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,24 +19,27 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;;
+import javax.persistence.Temporal;
+
+;
 
 /**
  *
  * @author Carlos
  */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String cpf;    
-    private Date birthday;    
+    private String cpf;
+    private Date birthday;
     @OneToOne(cascade = CascadeType.ALL)
-    private Contact contact;    
+    private Contact contact;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     private boolean active;
@@ -58,12 +65,12 @@ public class Person implements Serializable {
     }
 
     public void setCpf(String cpf) throws CpfInvalidException {
-        if(isCpfValid(cpf)){
+        if (isCpfValid(cpf)) {
             this.cpf = cpf;
-        }else{
+        } else {
             throw new CpfInvalidException("Cpf Invalido");
         }
-        
+
     }
 
     public Date getBirthday() {
@@ -73,13 +80,15 @@ public class Person implements Serializable {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
-    
-    public void setBirthday(String birthday){
-        String[] data = birthday.split("/");
-        this.birthday = new Date(
-                Integer.valueOf(data[2]),
-                Integer.valueOf(data[1]),
-                Integer.valueOf(data[0]));
+
+    public void setBirthday(String birthday) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = new java.sql.Date(format.parse(birthday).getTime());
+            setBirthday(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Contact getContact() {
@@ -104,7 +113,7 @@ public class Person implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
-    }   
+    }
 
     @Override
     public int hashCode() {
@@ -130,13 +139,13 @@ public class Person implements Serializable {
     public String toString() {
         return "smartgym.models.entities.Person[ id=" + id + " ]";
     }
-    
+
     private boolean isCpfValid(String cpf) {
 //------- Rotina para CPF
-        if(cpf.length() == 14){
+        if (cpf.length() == 14) {
             cpf = cpf.replace(".", "");
             cpf = cpf.replace("-", "");
-            if(cpf.length()!=11){
+            if (cpf.length() != 11) {
                 return false;
             }
             int d1, d2;
@@ -145,7 +154,7 @@ public class Person implements Serializable {
             String nDigResult;
             d1 = d2 = 0;
             digito1 = digito2 = resto = 0;
-            for(int n_Count = 1; n_Count < cpf.length() - 1; n_Count++){
+            for (int n_Count = 1; n_Count < cpf.length() - 1; n_Count++) {
                 digitoCPF = Integer.valueOf(cpf.substring(n_Count - 1, n_Count)).intValue();
 //--------- Multiplique a ultima casa por 2 a seguinte por 3 a seguinte por 4 e assim por diante.
                 d1 = d1 + (11 - n_Count) * digitoCPF;
@@ -156,7 +165,7 @@ public class Person implements Serializable {
 //--------- Primeiro resto da divisão por 11.
             resto = (d1 % 11);
 //--------- Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado anterior.
-            if(resto < 2){
+            if (resto < 2) {
                 digito1 = 0;
             } else {
                 digito1 = 11 - resto;
@@ -165,7 +174,7 @@ public class Person implements Serializable {
 //--------- Segundo resto da divisão por 11.
             resto = (d2 % 11);
 //--------- Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado anterior.
-            if(resto < 2){
+            if (resto < 2) {
                 digito2 = 0;
             } else {
                 digito2 = 11 - resto;
@@ -177,18 +186,18 @@ public class Person implements Serializable {
 //--------- Comparar o digito verificador do cpf com o primeiro resto + o segundo resto.
             return nDigVerific.equals(nDigResult);
         } //-------- Rotina para CNPJ
-        else if(cpf.length() == 14){
+        else if (cpf.length() == 14) {
             int soma = 0, aux, dig;
             String cnpj_calc = cpf.substring(0, 12);
             char[] chr_cnpj = cpf.toCharArray();
 //--------- Primeira parte
-            for(int i = 0; i < 4; i++){
-                if(chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9){
+            for (int i = 0; i < 4; i++) {
+                if (chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9) {
                     soma += (chr_cnpj[i] - 48) * (6 - (i + 1));
                 }
             }
-            for(int i = 0; i < 8; i++){
-                if(chr_cnpj[i + 4] - 48 >= 0 && chr_cnpj[i + 4] - 48 <= 9){
+            for (int i = 0; i < 8; i++) {
+                if (chr_cnpj[i + 4] - 48 >= 0 && chr_cnpj[i + 4] - 48 <= 9) {
                     soma += (chr_cnpj[i + 4] - 48) * (10 - (i + 1));
                 }
             }
@@ -197,13 +206,13 @@ public class Person implements Serializable {
                     ? "0" : Integer.toString(dig);
 //--------- Segunda parte
             soma = 0;
-            for(int i = 0; i < 5; i++){
-                if(chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9){
+            for (int i = 0; i < 5; i++) {
+                if (chr_cnpj[i] - 48 >= 0 && chr_cnpj[i] - 48 <= 9) {
                     soma += (chr_cnpj[i] - 48) * (7 - (i + 1));
                 }
             }
-            for(int i = 0; i < 8; i++){
-                if(chr_cnpj[i + 5] - 48 >= 0 && chr_cnpj[i + 5] - 48 <= 9){
+            for (int i = 0; i < 8; i++) {
+                if (chr_cnpj[i + 5] - 48 >= 0 && chr_cnpj[i + 5] - 48 <= 9) {
                     soma += (chr_cnpj[i + 5] - 48) * (10 - (i + 1));
                 }
             }
@@ -215,5 +224,4 @@ public class Person implements Serializable {
             return false;
         }
     }
-    
 }
