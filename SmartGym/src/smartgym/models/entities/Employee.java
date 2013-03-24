@@ -4,14 +4,10 @@
  */
 package smartgym.models.entities;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import smartgym.utilities.Encrypter;
 
 /**
  *
@@ -29,7 +25,7 @@ public class Employee extends Person {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Encrypter.md5(password);
     }
 
     public List<Activity> getActivitys() {

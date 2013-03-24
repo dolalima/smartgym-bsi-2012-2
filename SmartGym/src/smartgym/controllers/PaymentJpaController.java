@@ -116,6 +116,36 @@ public class PaymentJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Payment> findPaymentToValidByClient(long idCliente){
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Payment as o where o.paid=1 and o.valid =1 and o.client="+idCliente);            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Payment> findPaymentByClient(long idCliente){
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Payment as o where o.client="+idCliente);            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Payment> findPaymentPendenceByClient(long idCliente){
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Payment as o where o.paid=0 and o.client="+idCliente);            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     public int getPaymentCount() {
         EntityManager em = getEntityManager();

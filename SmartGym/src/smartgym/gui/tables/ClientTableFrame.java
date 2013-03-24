@@ -77,7 +77,13 @@ public class ClientTableFrame extends TableFrameBase implements TableInterface{
 
     @Override
     public Object getSelectRow() {
-        int index = this.getObjectTable().getSelectedRow();
-        return this.clientList.get(index);
+        int index;
+        if((this.clientList == null )||(this.clientList.size()==0) ){
+            return null;
+        } else{
+            index = this.getObjectTable().getSelectedRow();
+            return this.clientList.get(index);
+        }
+        
     }
 }

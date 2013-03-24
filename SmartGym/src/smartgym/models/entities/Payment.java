@@ -6,6 +6,7 @@ package smartgym.models.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,20 +21,36 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Payment implements Serializable {
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentedDay;
-    private double paymentValue;    
+    
+    @Column(nullable=false)    
+    private double paymentValue;
+    
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date maturity;
+    
     @ManyToOne
-    @JoinColumn(name="client")
-    private Client client;    
+    @JoinColumn(name="client",nullable = false)
+    private Client client; 
+    
     @ManyToOne
     @JoinColumn(name="employee")    
     private Employee employee;
+    
+    @Column(nullable = false)
     private boolean paid =false;
+    
+    @Column(nullable = false)
+    private boolean valid=false;
     
 
     public Long getId() {
@@ -84,6 +101,22 @@ public class Payment implements Serializable {
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public Date getMaturity() {
+        return maturity;
+    }
+
+    public void setMaturity(Date maturity) {
+        this.maturity = maturity;
+    }    
     
 
     @Override

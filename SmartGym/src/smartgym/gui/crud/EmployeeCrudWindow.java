@@ -14,6 +14,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.controllers.exceptions.NonexistentEntityException;
+import static smartgym.gui.crud.CrudWindowType.CREATE;
+import static smartgym.gui.crud.CrudWindowType.REMOVE;
+import static smartgym.gui.crud.CrudWindowType.UPDATE;
+import static smartgym.gui.crud.CrudWindowType.VIEW;
 import smartgym.models.entities.Address;
 import smartgym.models.entities.Contact;
 import smartgym.models.entities.Employee;
@@ -34,6 +38,20 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     public EmployeeCrudWindow(java.awt.Frame parent, boolean modal, CrudWindowType type, EntityManagerFactory emf) {
         super(parent, modal, type, emf);
         initComponents();
+        switch (type) {
+            case CREATE:
+                actionButton.setText("Salvar");
+                break;
+            case UPDATE:
+                actionButton.setText("Atualizar");
+                break;
+            case REMOVE:
+                actionButton.setText("Remover");
+                break;
+            case VIEW:
+                actionButton.setVisible(false);
+                break;
+        }
     }
 
     /**
@@ -295,8 +313,18 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         mainPanel.add(personCrudPanel, java.awt.BorderLayout.PAGE_START);
 
         cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         actionButton.setText("Ação");
+        actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout actionCrudPanelLayout = new javax.swing.GroupLayout(actionCrudPanel);
         actionCrudPanel.setLayout(actionCrudPanelLayout);
@@ -400,6 +428,26 @@ public class EmployeeCrudWindow extends CrudWindowBase {
         // TODO add your handling code here:
     }//GEN-LAST:event_employeePasswordFieldActionPerformed
 
+    private void actionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonActionPerformed
+        // TODO add your handling code here:
+        switch (this.getWindowsType()) {
+            case CREATE:
+                this.create();
+                break;
+            case UPDATE:
+                this.update();
+                break;
+            case REMOVE:
+                this.delete();
+                break;
+        }
+    }//GEN-LAST:event_actionButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        this.cancel();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -432,7 +480,7 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             @Override
             public void run() {
                 PersistenceUnit.start();
-                EmployeeCrudWindow dialog = new EmployeeCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE,PersistenceUnit.getEntityManagerFactory());
+                EmployeeCrudWindow dialog = new EmployeeCrudWindow(new javax.swing.JFrame(), true, CrudWindowType.CREATE, PersistenceUnit.getEntityManagerFactory());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -486,7 +534,32 @@ public class EmployeeCrudWindow extends CrudWindowBase {
 
     @Override
     protected void restart() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch (this.getWindowsType()) {
+            case CREATE:
+                actionButton.setText("Salvar");
+                actionButton.setVisible(true);
+                this.employee = null;
+                enableTextFields();
+                cleanTextFields();
+                break;
+            case UPDATE:
+                actionButton.setText("Atualizar");
+                actionButton.setVisible(true);
+                enableTextFields();
+                fillTextFields();
+                break;
+            case REMOVE:
+                actionButton.setText("Remover");
+                actionButton.setVisible(true);
+                fillObject();
+                fillTextFields();
+                break;
+            case VIEW:
+                actionButton.setVisible(false);
+                fillObject();
+                fillTextFields();
+                break;
+        }
     }
 
     @Override
@@ -507,6 +580,8 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             contactResitencialPhoneTextField.setText(employee.getContact().getResidencialPhone());
             contactCellPhoneTextField.setText(employee.getContact().getCellPhone());
             contactEmailTextField.setText(employee.getContact().getEmail());
+
+            employeePasswordField.getText();
 
             if (employee.isActive()) {
                 employeeActiveComboBox.setSelectedIndex(0);
@@ -543,14 +618,13 @@ public class EmployeeCrudWindow extends CrudWindowBase {
                 dependenceList = dependenceList + "-SENHAS DIVERGEM-\n";
                 dependence = true;
             }
-        }else{
+        } else {
             dependenceList = dependenceList + "-SENHAS MUITO CURTA-\n";
-                dependence = true;
+            dependence = true;
         }
 
         if (dependence) {
-            JDialog alert = new JDialog(this, dependenceList, true);
-            alert.setVisible(true);
+            JOptionPane.showMessageDialog(this, dependenceList);
         }
 
         return dependence;
@@ -575,13 +649,21 @@ public class EmployeeCrudWindow extends CrudWindowBase {
     @Override
     protected void create() {
         if (!this.existDependence()) {
-            fillObject();
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SmartGymPU");
-            EmployeeJpaController clienteController = new EmployeeJpaController(emf);
+            fillObject();            
+            EmployeeJpaController clienteController = new EmployeeJpaController(getEntityManagerFactory());
             clienteController.create(employee);
-            emf.close();
-        } else {
-        }
+            
+            JOptionPane.showMessageDialog(this, "Cliente cadastrado com sussesso");
+
+
+            int resp = JOptionPane.showConfirmDialog(this, "Deseja Cadastrar ou Cliente?", "Sair", JOptionPane.YES_NO_OPTION);
+
+            if (resp == JOptionPane.YES_OPTION) {
+                restart();
+            } else {
+                this.dispose();
+            }
+        } 
     }
 
     @Override
@@ -675,6 +757,8 @@ public class EmployeeCrudWindow extends CrudWindowBase {
             employee.getContact().setResidencialPhone(this.contactResitencialPhoneTextField.getText());
             employee.getContact().setCellPhone(this.contactCellPhoneTextField.getText());
             employee.getContact().setEmail(this.contactEmailTextField.getText());
+
+            employee.setPassword(employeePasswordField.getText());
 
         }
     }

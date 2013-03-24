@@ -116,6 +116,17 @@ public class EmployeeJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public Employee findEmployeeByLogin(String login, String password){
+       EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Employee as o where o.cpf="+login+" and o.password="+password );
+            
+            return (Employee) q.getSingleResult();
+        } finally {
+            em.close();
+        } 
+    }
 
     public int getEmployeeCount() {
         EntityManager em = getEntityManager();

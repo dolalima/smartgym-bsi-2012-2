@@ -619,6 +619,7 @@ public class ClientCrudWindow extends CrudWindowBase {
             clienteController.create(client);
 
         } else {
+            return;
         }
         JOptionPane.showMessageDialog(this, "Cliente cadastrado com sussesso");
         

@@ -4,6 +4,8 @@
  */
 package smartgym.gui;
 
+import java.awt.GraphicsConfiguration;
+import javax.swing.JOptionPane;
 import smartgym.controllers.ClientJpaController;
 import smartgym.controllers.EmployeeJpaController;
 import smartgym.gui.crud.ClientCrudWindow;
@@ -11,6 +13,8 @@ import smartgym.gui.crud.CrudWindowType;
 import smartgym.gui.crud.EmployeeCrudWindow;
 import smartgym.gui.tables.ClientTableFrame;
 import smartgym.models.entities.Client;
+import smartgym.models.entities.Employee;
+import smartgym.models.entities.Manager;
 import smartgym.persistence.PersistenceUnit;
 
 /**
@@ -18,7 +22,7 @@ import smartgym.persistence.PersistenceUnit;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class MainWindow extends javax.swing.JFrame {
-    
+
     ClientTableFrame clienteTableFrame;
     // Controladores de Entidades
     private ClientJpaController clientController;
@@ -26,19 +30,44 @@ public class MainWindow extends javax.swing.JFrame {
     // Cruds de Entidades
     private ClientCrudWindow clientCrudWindow;
     private EmployeeCrudWindow employeeCrudWindow;
+    private PaymentWindow paymentWindow;
+    // Entidades
+    private Employee employee;
+    //Mode
+    private ApplicationMode mode;
 
     /**
      * Creates new form SmartGymEmployeePanel
      */
     public MainWindow() {
         initComponents();
+        // Controladores 
         clientController = new ClientJpaController(PersistenceUnit.getEntityManagerFactory());
+        // Janela Auxiliares
         clientCrudWindow = new ClientCrudWindow(this, true, CrudWindowType.CREATE, PersistenceUnit.getEntityManagerFactory());
+        paymentWindow = new PaymentWindow(this,true,PersistenceUnit.getEntityManagerFactory(),employee);
+        // Tabela da janela principal
         clienteTableFrame = new ClientTableFrame();
         clienteTableFrame.setVisible(true);
         tablePane.add(clienteTableFrame);
-        
+
     }
+
+    MainWindow(Manager manager) {
+        super();
+        this.mode = ApplicationMode.MANAGER_MODE;
+        this.employee = manager;
+    }
+
+    public MainWindow(Employee employee) {
+        super();
+        mode = ApplicationMode.EMPLOYEE_MODE;
+        this.employee = employee;
+        financeButton.setVisible(false);
+        reportButton.setVisible(false);
+        employeeCrudMenuItem.setVisible(rootPaneCheckingEnabled);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,12 +82,12 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         clientCreateButton = new javax.swing.JButton();
         clientEditButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        paymentButton = new javax.swing.JButton();
+        financeButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jPanel6 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
+        reportButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         searchClientNameTextField = new javax.swing.JTextField();
@@ -102,15 +131,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setText("Pagar!");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        paymentButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        paymentButton.setText("Pagar!");
+        paymentButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                paymentButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Finanças");
+        financeButton.setText("Finanças");
 
         jPanel6.setBackground(new java.awt.Color(200, 240, 240));
 
@@ -125,10 +154,10 @@ public class MainWindow extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jButton6.setText("Emitir Relatório");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        reportButton.setText("Emitir Relatório");
+        reportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                reportButtonActionPerformed(evt);
             }
         });
 
@@ -142,11 +171,11 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(clientCreateButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                     .addComponent(clientEditButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paymentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(financeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(reportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -161,13 +190,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(clientEditButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(financeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(reportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(71, 71, 71))
         );
 
@@ -354,14 +383,22 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void paymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        Client client = (Client) clienteTableFrame.getSelectRow();
+        if (client != null) {
+            paymentWindow.setClient(client);
+            paymentWindow.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "Não há um cliente selecionado");
+        }
+        
+    }//GEN-LAST:event_paymentButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         clienteTableFrame.setObjectList(clientController.findClinteEntitiesByName(searchClientNameTextField.getText()));
-                
+
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void clientCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientCreateButtonActionPerformed
@@ -383,16 +420,20 @@ public class MainWindow extends javax.swing.JFrame {
         clientCrud.dispose();
     }//GEN-LAST:event_clientCrudMenuItemActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void reportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_reportButtonActionPerformed
 
     private void clientEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientEditButtonActionPerformed
         // TODO add your handling code here:
         Client client = (Client) clienteTableFrame.getSelectRow();
-        clientCrudWindow.setClient(client);
-        clientCrudWindow.setWindowsType(CrudWindowType.UPDATE);        
-        clientCrudWindow.setVisible(true);
+        if (client != null) {
+            clientCrudWindow.setClient(client);
+            clientCrudWindow.setWindowsType(CrudWindowType.UPDATE);
+            clientCrudWindow.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "Não há um cliente selecionado");
+        }
     }//GEN-LAST:event_clientEditButtonActionPerformed
 
     /**
@@ -437,9 +478,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton clientEditButton;
     private javax.swing.JMenu crudMenu;
     private javax.swing.JMenuItem employeeCrudMenuItem;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton financeButton;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -462,11 +501,11 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton paymentButton;
+    private javax.swing.JButton reportButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchClientNameTextField;
     private javax.swing.JTextField searchCpfClientTextField;
     private javax.swing.JPanel tablePane;
     // End of variables declaration//GEN-END:variables
-
-    
 }
