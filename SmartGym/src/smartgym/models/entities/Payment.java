@@ -5,7 +5,7 @@
 package smartgym.models.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,14 +28,12 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Temporal(javax.persistence.TemporalType.DATE)
+    
     private Date paymentedDay;
     
     @Column(nullable=false)    
-    private double paymentValue;
+    private double paymentValue;    
     
-    @Column(nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date maturity;
     
     @ManyToOne
@@ -46,10 +44,10 @@ public class Payment implements Serializable {
     @JoinColumn(name="employee")    
     private Employee employee;
     
-    @Column(nullable = false)
+    
     private boolean paid =false;
     
-    @Column(nullable = false)
+    
     private boolean valid=false;
     
 

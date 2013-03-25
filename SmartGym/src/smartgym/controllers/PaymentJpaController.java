@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import smartgym.controllers.exceptions.NonexistentEntityException;
+import smartgym.models.entities.Client;
 import smartgym.models.entities.Payment;
 
 /**
@@ -137,10 +138,20 @@ public class PaymentJpaController implements Serializable {
         }
     }
     
-    public List<Payment> findPaymentPendenceByClient(long idCliente){
+    public List<Payment> findPaymentInadiplentByClient(Client client) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from Payment as o where o.paid=0 and o.client="+idCliente);            
+            Query q = em.createQuery("select object(o) from Payment as o where o.paid=0 and o.client="+client.getId());            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Payment> findPaymentPendenceByClient(Client client){
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Payment as o where o.paid=1 and o.valid=0 and o.client="+client.getId());            
             return q.getResultList();
         } finally {
             em.close();
@@ -156,5 +167,7 @@ public class PaymentJpaController implements Serializable {
             em.close();
         }
     }
+
+    
     
 }

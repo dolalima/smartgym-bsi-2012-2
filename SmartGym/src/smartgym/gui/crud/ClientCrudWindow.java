@@ -539,7 +539,7 @@ public class ClientCrudWindow extends CrudWindowBase {
             personNameTextField.setText(client.getName());
             personCpfTextField.setText(client.getCpf());
             personBirthdayTextField.setText(
-                    new SimpleDateFormat("dd/MM/yyy").format(client.getBirthday()));
+                    new SimpleDateFormat("dd/MM/yyyy").format(client.getBirthday()));
 
             addressStreetTextField.setText(client.getAddress().getStreet());
             addressNeiborhoodTextField.setText(client.getAddress().getNeighborhood());

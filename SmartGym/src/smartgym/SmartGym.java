@@ -42,10 +42,9 @@ public final class SmartGym {
         
         AuthWindow authWindow = new AuthWindow();
         authWindow.setVisible(true);
-        
+                
         //MainWindow mainWindow = new MainWindow();
         //mainWindow.setVisible(true);
-        
         PersistenceUnit.close();
         
     }

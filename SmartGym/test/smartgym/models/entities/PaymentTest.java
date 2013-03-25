@@ -31,29 +31,28 @@ public class PaymentTest {
     public void testGetId() {
         System.out.println("getId");
         Payment instance = new Payment();
-        Long expResult = null;
+        instance.setId(1l);
+        Long expResult = 1l;
         Long result = instance.getId();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
     @Test
     public void testSetId() {
         System.out.println("setId");
-        Long id = null;
+        Long id = 1l;
         Payment instance = new Payment();
         instance.setId(id);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test
     public void testGetPaymentedDay() {
         System.out.println("getPaymentedDay");
         Payment instance = new Payment();
-        Date expResult = null;
+        Date expResult = new java.sql.Date(new java.util.Date().getTime());
         Date result = instance.getPaymentedDay();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     @Test
@@ -61,27 +60,27 @@ public class PaymentTest {
         System.out.println("setPaymentedDay");
         Date paymentedDay = null;
         Payment instance = new Payment();
-        instance.setPaymentedDay(paymentedDay);
-        fail("The test case is a prototype.");
+        java.util.Date date =  new java.util.Date();
+        instance.setPaymentedDay(new java.sql.Date(date.getTime()));
+        
     }
 
     @Test
     public void testGetPaymentValue() {
         System.out.println("getPaymentValue");
         Payment instance = new Payment();
-        double expResult = 0.0;
+        instance.setPaymentValue(55.0);
+        double expResult = 55.0;
         double result = instance.getPaymentValue();
-        assertEquals(expResult, result, 0.0);
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result, 0.0);        
     }
 
     @Test
     public void testSetPaymentValue() {
         System.out.println("setPaymentValue");
-        double paymentValue = 0.0;
+        double paymentValue = 69.0;
         Payment instance = new Payment();
-        instance.setPaymentValue(paymentValue);
-        fail("The test case is a prototype.");
+        instance.setPaymentValue(paymentValue);        
     }
 
     @Test

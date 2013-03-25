@@ -64,5 +64,6 @@ public class Employee extends Person {
     public String toString() {
         return "smartgym.models.entities.Employee[ id=" + this.getId() + " ]";
     }
-   
+
+        
 }

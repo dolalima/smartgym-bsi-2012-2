@@ -31,6 +31,7 @@ public class MainWindow extends javax.swing.JFrame {
     private ClientCrudWindow clientCrudWindow;
     private EmployeeCrudWindow employeeCrudWindow;
     private PaymentWindow paymentWindow;
+    private FinanceClientWindow financeClienWindow;
     // Entidades
     private Employee employee;
     //Mode
@@ -46,6 +47,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Janela Auxiliares
         clientCrudWindow = new ClientCrudWindow(this, true, CrudWindowType.CREATE, PersistenceUnit.getEntityManagerFactory());
         paymentWindow = new PaymentWindow(this,true,PersistenceUnit.getEntityManagerFactory(),employee);
+        financeClienWindow = new FinanceClientWindow(this,true,PersistenceUnit.getEntityManagerFactory(),employee);
         // Tabela da janela principal
         clienteTableFrame = new ClientTableFrame();
         clienteTableFrame.setVisible(true);
@@ -140,6 +142,11 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         financeButton.setText("Finanças");
+        financeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                financeButtonActionPerformed(evt);
+            }
+        });
 
         jPanel6.setBackground(new java.awt.Color(200, 240, 240));
 
@@ -387,7 +394,7 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         Client client = (Client) clienteTableFrame.getSelectRow();
         if (client != null) {
-            paymentWindow.setClient(client);
+            paymentWindow.setClient(client);            
             paymentWindow.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(this, "Não há um cliente selecionado");
@@ -435,6 +442,18 @@ public class MainWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Não há um cliente selecionado");
         }
     }//GEN-LAST:event_clientEditButtonActionPerformed
+
+    private void financeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_financeButtonActionPerformed
+        // TODO add your handling code here:
+        Client client = (Client) clienteTableFrame.getSelectRow();
+        if (client != null) {
+            financeClienWindow.setClient(client);
+            financeClienWindow.setVisible(rootPaneCheckingEnabled);
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Não há um cliente selecionado");
+        }
+    }//GEN-LAST:event_financeButtonActionPerformed
 
     /**
      * @param args the command line arguments

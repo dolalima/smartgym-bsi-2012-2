@@ -4,13 +4,18 @@
  */
 package smartgym.gui;
 
+import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JOptionPane;
 import smartgym.controllers.PaymentJpaController;
+import smartgym.controllers.exceptions.NonexistentEntityException;
 import smartgym.gui.tables.PaymentTableFrame;
 import smartgym.models.entities.Client;
 import smartgym.models.entities.Employee;
 import smartgym.models.entities.Manager;
+import smartgym.models.entities.Payment;
 
 /**
  *
@@ -52,9 +57,10 @@ public class PaymentWindow extends javax.swing.JDialog {
     public void restart() {
         if (client != null) {
             clientNameTextField.setText(this.client.getName());
-            paymentTable.setObjectList(paymentController.findPaymentPendenceByClient(client.getId()));
+            paymentTable.setObjectList(paymentController.findPaymentInadiplentByClient(client));
         } else {
             JOptionPane.showMessageDialog(this, "Não há client disponivel para esta janela");
+            this.dispose();
         }
 
     }
@@ -71,8 +77,8 @@ public class PaymentWindow extends javax.swing.JDialog {
         clientNameLabel = new javax.swing.JLabel();
         tableFrame = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        payButton = new javax.swing.JButton();
         clientNameTextField = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -82,12 +88,17 @@ public class PaymentWindow extends javax.swing.JDialog {
         tableFrame.setBorder(javax.swing.BorderFactory.createTitledBorder("Pagamento Pendentes"));
         tableFrame.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("Fechar");
-
-        jButton2.setText("Receber");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setText("Fechar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        payButton.setText("Receber");
+        payButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payButtonActionPerformed(evt);
             }
         });
 
@@ -96,17 +107,17 @@ public class PaymentWindow extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jButton2)
+                .addComponent(payButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addComponent(cancelButton))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(cancelButton)
+                    .addComponent(payButton)))
         );
 
         clientNameTextField.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -145,10 +156,42 @@ public class PaymentWindow extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    private void payButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payButtonActionPerformed
+        // pega pagamento selecionado
+        Payment payment = (Payment) paymentTable.getSelectRow();
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        if(payment==null){
+            JOptionPane.showMessageDialog(this, "Nenhuma linha selecionada");
+            return;
+        }
+        int resp = JOptionPane.showConfirmDialog(this, "Confirma o recebimento de pagamento?", "Confirme", JOptionPane.YES_NO_OPTION);
+
+        if(resp == JOptionPane.YES_OPTION){
+            payment.setEmployee(employee);
+            payment.setPaid(true);
+            java.util.Date date = new java.util.Date();
+            payment.setPaymentedDay(new Date(date.getTime()));
+            try {
+                paymentController.edit(payment);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(PaymentWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(PaymentWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                JOptionPane.showMessageDialog(this, "Pagamento resgistrado com sucesso.");
+                restart();
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Operação cancelada.\n Nehuma alteração foi realizada");
+        }
+        
+    }//GEN-LAST:event_payButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        cancel();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,11 +235,20 @@ public class PaymentWindow extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
     private javax.swing.JLabel clientNameLabel;
     private javax.swing.JLabel clientNameTextField;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton payButton;
     private javax.swing.JPanel tableFrame;
     // End of variables declaration//GEN-END:variables
+
+    private void cancel() {
+        int resp = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja cancelar?", "Sair", JOptionPane.YES_NO_OPTION);
+
+        if (resp == JOptionPane.YES_OPTION) {
+            this.dispose();
+            
+        }
+    }
 }

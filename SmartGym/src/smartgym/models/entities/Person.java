@@ -80,7 +80,7 @@ public class Person implements Serializable {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
-
+    
     public void setBirthday(String birthday) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try {

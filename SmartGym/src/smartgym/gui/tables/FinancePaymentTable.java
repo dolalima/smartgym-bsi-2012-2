@@ -4,23 +4,30 @@
  */
 package smartgym.gui.tables;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JCheckBox;
+import javax.swing.table.DefaultTableModel;
 import smartgym.models.entities.Payment;
 
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ClientInadimplentTable extends TableFrameBase implements TableInterface{
+public class FinancePaymentTable extends TableFrameBase implements TableInterface{
+    
+    List<Payment> paymentList;
+    
 
     /**
      * Creates new form ClientInadimplentTable
      */
-    public ClientInadimplentTable() {
-        initComponents();
-        this.setTableHeader(new String[]{"", "Data"});
-        
+    public FinancePaymentTable() {
+        super();
+        //initComponents();
+        this.setTableHeader(new String[]{"Codigo", "Data","Valor"});
+        getObjectTable().setModel(new DefaultTableModel(new Object[0][0], getTableHeader()));
+        getObjectTable().setVisible(true);
     }
 
     /**
@@ -48,17 +55,30 @@ public class ClientInadimplentTable extends TableFrameBase implements TableInter
 
     @Override
     public Object getSelectRow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = this.getObjectTable().getSelectedRow();
+        return this.paymentList.get(index);
     }
 
     @Override
     public void fillTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object[][] dados = new Object[paymentList.size()][getTableHeader().length];
+
+        for (int i = 0; i < paymentList.size(); i++) {
+            Payment payment = (Payment) paymentList.get(i);
+            dados[i][0] = payment.getId();            
+            dados[i][1] = new SimpleDateFormat("dd/MM/yyyy").format(payment.getMaturity());
+            dados[i][2] = "R$ "+payment.getPaymentValue();
+            
+            
+            getObjectTable().setModel(new DefaultTableModel(dados, this.getTableHeader()));
+
+        }
     }
 
     @Override
     public void setObjectList(List object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.paymentList = (List<Payment>)object;
+        fillTable();
     }
 
     

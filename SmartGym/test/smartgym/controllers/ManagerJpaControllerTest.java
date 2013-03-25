@@ -4,13 +4,18 @@
  */
 package smartgym.controllers;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import smartgym.models.entities.Address;
+import smartgym.models.entities.Contact;
 import smartgym.models.entities.Manager;
+import smartgym.models.entities.exceptions.CpfInvalidException;
+import smartgym.persistence.PersistenceUnit;
 
 /**
  *
@@ -23,29 +28,49 @@ public class ManagerJpaControllerTest {
     
     @Before
     public void setUp() {
+        PersistenceUnit.start();
     }
     
     @After
     public void tearDown() {
+        PersistenceUnit.close();
     }
 
     @Test
     public void testGetEntityManager() {
         System.out.println("getEntityManager");
-        ManagerJpaController instance = null;
-        EntityManager expResult = null;
+        ManagerJpaController instance = new ManagerJpaController(PersistenceUnit.getEntityManagerFactory());        
+        EntityManager expResult = PersistenceUnit.getEntityManagerFactory().createEntityManager();
         EntityManager result = instance.getEntityManager();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws CpfInvalidException {
         System.out.println("create");
-        Manager manager = null;
-        ManagerJpaController instance = null;
+        Manager manager = new Manager();
+        manager.setName("Carlos Eduardo de Souza Lima");
+        manager.setCpf("070.058.184-74");
+        Date date = new Date();
+        date.setDate(24);
+        date.setMonth(3);
+        date.setYear(1985);
+        manager.setBirthday((java.sql.Date) date);
+        Contact contact = new Contact();
+        contact.setCellPhone("(81)8619-6629");
+        contact.setResidencialPhone("(81)3523-6946");
+        contact.setEmail("dolalima@gmail.com");
+        manager.setContact(contact);
+        Address address = new Address();
+        address.setStreet("Rua Jardim Betânia nº 75");
+        address.setNeighborhood("Livrament");
+        address.setZipcode("55602-380");
+        address.setCity("Vitória de Santo Antão");
+        manager.setAddress(address);
+        manager.setPassword("lima1807");
+        ManagerJpaController instance = new ManagerJpaController(PersistenceUnit.getEntityManagerFactory());
         instance.create(manager);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test

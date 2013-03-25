@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import smartgym.models.entities.exceptions.PaymentDayInvalidException;
 
 /**
  *
@@ -37,12 +38,12 @@ public class ClientTest {
     }
 
     @Test
-    public void testSetPaymentDay() {
+    public void testSetPaymentDay() throws PaymentDayInvalidException {
         System.out.println("setPaymentDay");
         int paymentDay = 0;
         Client instance = new Client();
         instance.setPaymentDay(paymentDay);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test

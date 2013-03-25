@@ -22,7 +22,7 @@ public class PaymentTableFrame extends TableFrameBase implements TableInterface{
     public PaymentTableFrame() {
         super();
         //initComponents();
-        this.setTableHeader(new String[]{"", "Client", "Vencimento", "status"});
+        this.setTableHeader(new String[]{"Codigo", "Client", "Vencimento","Valor", "status"});
         getObjectTable().setModel(new DefaultTableModel(new Object[0][0], getTableHeader()));
         getObjectTable().setVisible(true);
     }
@@ -58,17 +58,18 @@ public class PaymentTableFrame extends TableFrameBase implements TableInterface{
 
     @Override
     public void fillTable() {
-        Object[][] dados = new Object[paymentList.size()][4];
+        Object[][] dados = new Object[paymentList.size()][getTableHeader().length];
 
         for (int i = 0; i < paymentList.size(); i++) {
             Payment payment = (Payment) paymentList.get(i);
-            dados[i][0] = "";
+            dados[i][0] = payment.getId();
             dados[i][1] = payment.getClient().getName();
-            dados[i][2] = new SimpleDateFormat("dd/MM/yyy").format(payment.getPaymentedDay());
+            dados[i][2] = new SimpleDateFormat("dd/MM/yyyy").format(payment.getMaturity());
+            dados[i][3] = "R$ "+payment.getPaymentValue();
             if(payment.isPaid()){
-                dados[i][3] = "Pago";
+                dados[i][4] = "Pago";
             }else{
-                dados[i][3] = "Pedente";
+                dados[i][4] = "Pedente";
             }
             
             getObjectTable().setModel(new DefaultTableModel(dados, this.getTableHeader()));
@@ -79,6 +80,7 @@ public class PaymentTableFrame extends TableFrameBase implements TableInterface{
     @Override
     public void setObjectList(List object) {
         this.paymentList = (List<Payment>)object;
+        fillTable();
     }
 
     

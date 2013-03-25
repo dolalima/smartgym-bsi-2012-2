@@ -123,7 +123,7 @@ public class EmployeeJpaController implements Serializable {
     public Employee findEmployeeByLogin(String login, String password){
        EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from Employee as o where (o.cpf='"+login+"') and (o.password='"+password+"')" );
+            Query q = em.createQuery("select object(o) from Employee as o where o.cpf='"+login+"' and o.password='"+password+"'" );
             
             return (Employee) q.getSingleResult();
         } finally {
