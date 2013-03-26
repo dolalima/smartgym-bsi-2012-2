@@ -157,7 +157,7 @@ public class AuthWindow extends javax.swing.JFrame {
         String password;
         password = Encrypter.md5(String.valueOf(passwordTextField.getPassword()));
         
-        Employee employee = employeeController.findEmployeeByLogin(login, Encrypter.md5(password));
+        Employee employee = employeeController.findEmployeeByLogin(login, password);
         if(employee!=null){
             Manager manager = managerController.findManager(employee.getId());
             if(manager!=null){

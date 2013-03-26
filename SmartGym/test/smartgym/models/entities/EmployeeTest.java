@@ -45,34 +45,4 @@ public class EmployeeTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Employee instance = new Employee();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Employee instance = new Employee();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Employee instance = new Employee();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
 }

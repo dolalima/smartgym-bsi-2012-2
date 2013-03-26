@@ -33,8 +33,7 @@ public class ClientTest {
         Client instance = new Client();
         int expResult = 0;
         int result = instance.getPaymentDay();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result);        
     }
 
     @Test
@@ -53,7 +52,7 @@ public class ClientTest {
         boolean expResult = false;
         boolean result = instance.isRegular();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test
@@ -62,37 +61,7 @@ public class ClientTest {
         boolean regular = false;
         Client instance = new Client();
         instance.setRegular(regular);
-        fail("The test case is a prototype.");
+        
     }
 
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Client instance = new Client();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Client instance = new Client();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Client instance = new Client();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
 }

@@ -306,28 +306,28 @@ public class FinanceClientWindow extends javax.swing.JDialog {
     private void valid(Payment payment) {
         payment.setValid(true);
         try {
-            paymentController.edit(payment);
-            restart();
+            paymentController.edit(payment);            
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(FinanceClientWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(FinanceClientWindow.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             JOptionPane.showMessageDialog(this, "Pagamento validado com sucesso.");
+            restart();
         }
     }
 
     private void disregard(Payment payment) {
         payment.setValid(true);
         try {
-            paymentController.edit(payment);
-            restart();
+            paymentController.edit(payment);            
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(FinanceClientWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(FinanceClientWindow.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             JOptionPane.showMessageDialog(this, "Pagamento validado com sucesso.");
+            restart();
         }
     }
 
@@ -337,8 +337,7 @@ public class FinanceClientWindow extends javax.swing.JDialog {
         java.util.Date date = new java.util.Date();
         payment.setPaymentedDay(new Date(date.getTime()));
         try {
-            paymentController.edit(payment);
-            restart();
+            paymentController.edit(payment);            
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(PaymentWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

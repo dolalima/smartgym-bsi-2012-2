@@ -30,106 +30,77 @@ public class ContactTest {
     public void testGetId() {
         System.out.println("getId");
         Contact instance = new Contact();
-        Long expResult = null;
+        Long expResult = 1l;
+        instance.setId(expResult);
         Long result = instance.getId();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test
     public void testSetId() {
         System.out.println("setId");
-        Long id = null;
+        Long id = 1l;
         Contact instance = new Contact();
         instance.setId(id);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test
     public void testGetResidencialPhone() {
         System.out.println("getResidencialPhone");
         Contact instance = new Contact();
-        String expResult = "";
+        String expResult = "(81)3523-6946";
+        instance.setResidencialPhone(expResult);
         String result = instance.getResidencialPhone();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     @Test
     public void testSetResidencialPhone() {
         System.out.println("setResidencialPhone");
-        String residencialPhone = "";
+        String residencialPhone = "(81)3523-6946";
         Contact instance = new Contact();
         instance.setResidencialPhone(residencialPhone);
-        fail("The test case is a prototype.");
+        
     }
 
     @Test
     public void testGetCellPhone() {
         System.out.println("getCellPhone");
         Contact instance = new Contact();
-        String expResult = "";
+        String expResult = "(81)8619-6629";
+        instance.setCellPhone(expResult);
         String result = instance.getCellPhone();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     @Test
     public void testSetCellPhone() {
         System.out.println("setCellPhone");
-        String cellPhone = "";
+        String cellPhone = "(81)8619-6629";
         Contact instance = new Contact();
-        instance.setCellPhone(cellPhone);
-        fail("The test case is a prototype.");
+        instance.setCellPhone(cellPhone);        
     }
 
     @Test
     public void testGetEmail() {
         System.out.println("getEmail");
         Contact instance = new Contact();
-        String expResult = "";
+        
+        String expResult = "dolalima@gmail.com";
+        instance.setEmail(expResult);
         String result = instance.getEmail();
         assertEquals(expResult, result);
-        fail("The test case is a prototype.");
     }
 
     @Test
     public void testSetEmail() {
         System.out.println("setEmail");
-        String email = "";
+        String email = "dolalima@gmail.com";
         Contact instance = new Contact();
         instance.setEmail(email);
-        fail("The test case is a prototype.");
+        
     }
 
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Contact instance = new Contact();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Contact instance = new Contact();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Contact instance = new Contact();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
 }

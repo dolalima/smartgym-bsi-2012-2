@@ -375,7 +375,7 @@ public class ClientCrudWindow extends CrudWindowBase {
                 .addComponent(paydayLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paydaySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(199, Short.MAX_VALUE))
         );
         optionCrudPanelLayout.setVerticalGroup(
             optionCrudPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

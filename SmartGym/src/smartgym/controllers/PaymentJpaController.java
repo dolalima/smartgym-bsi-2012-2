@@ -151,7 +151,7 @@ public class PaymentJpaController implements Serializable {
     public List<Payment> findPaymentPendenceByClient(Client client){
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("select object(o) from Payment as o where o.paid=1 and o.valid=0 and o.client="+client.getId());            
+            Query q = em.createQuery("select object(o) from Payment as o where (o.paid=1 and o.valid=0) and o.client="+client.getId());            
             return q.getResultList();
         } finally {
             em.close();

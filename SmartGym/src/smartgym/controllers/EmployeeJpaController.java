@@ -126,7 +126,9 @@ public class EmployeeJpaController implements Serializable {
             Query q = em.createQuery("select object(o) from Employee as o where o.cpf='"+login+"' and o.password='"+password+"'" );
             
             return (Employee) q.getSingleResult();
-        } finally {
+        } catch (Exception e){
+            return null;
+        }finally {
             em.close();
         } 
     }
@@ -139,6 +141,6 @@ public class EmployeeJpaController implements Serializable {
         } finally {
             em.close();
         }
-    }
+    }    
     
 }

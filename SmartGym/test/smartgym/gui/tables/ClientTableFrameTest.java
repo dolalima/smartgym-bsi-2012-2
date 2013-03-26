@@ -25,12 +25,13 @@ public class ClientTableFrameTest {
     
     
     public ClientTableFrameTest() {
-        PersistenceUnit.start();
-        clientController = new ClientJpaController(PersistenceUnit.getEntityManagerFactory());
+        
     }
     
     @Before
-    public void setUp() {        
+    public void setUp() { 
+        PersistenceUnit.start();
+        clientController = new ClientJpaController(PersistenceUnit.getEntityManagerFactory());
     }
     
     @After
@@ -46,9 +47,9 @@ public class ClientTableFrameTest {
         instance.setObjectList(objectList);
         instance.fillTable();
         instance.getObjectTable().setRowSelectionInterval(0, 0);
-        Client expResult = clientController.findClient(1l);
+        Object expResult = objectList.get(0);
         
-        //assertEquals(expResult.getId(), result.getId());
+        assertEquals(expResult, instance.getSelectRow());
         
     }
 
@@ -75,5 +76,13 @@ public class ClientTableFrameTest {
         frame.setLayout(new BorderLayout());
         frame.add(instance);
         frame.setVisible(true);
+    }
+    
+    @Test
+    public void testSetObjectlist(){
+        System.out.println("setObjectlist");
+        List objectList = clientController.findClientEntities();
+        ClientTableFrame instance = new ClientTableFrame();
+        instance.setObjectList(objectList);
     }
 }

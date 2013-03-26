@@ -121,34 +121,5 @@ public class PaymentTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Payment instance = new Payment();
-        int expResult = 0;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object object = null;
-        Payment instance = new Payment();
-        boolean expResult = false;
-        boolean result = instance.equals(object);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Payment instance = new Payment();
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
+            
 }
